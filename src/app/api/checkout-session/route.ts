@@ -7,7 +7,7 @@ interface CartItem {
   quantity: number;
 }
 
-const stripe = new Stripe(process.env.StripeSecretKey!); // No apiVersion needed
+const stripe = new Stripe(process.env.StripeSecretKey!); // No apiVersion needed 
 
 export async function POST(req: NextRequest) {
   try {
