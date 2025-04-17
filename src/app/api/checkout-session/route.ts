@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+
+interface CartItem {
+  name: string;
+  price: number;
+  quantity: number;
+}
+
 const stripe = new Stripe(process.env.StripeSecretKey!); // No apiVersion needed
 
 export async function POST(req: NextRequest) {
@@ -8,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      line_items: body.items.map((item: any) => ({
+      line_items: body.items.map((item: CartItem) => ({
         price_data: {
           currency: "usd",
           product_data: {
@@ -26,8 +33,11 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ sessionId: session.id });
-  } catch (error: any) {
+  } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });
   }
 }

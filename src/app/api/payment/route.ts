@@ -1,9 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
-const stripe = require('stripe')(process.env.StripeSecretKey);
+import { NextResponse } from "next/server";
+import Stripe from 'stripe';
 
-export async function POST(req: NextRequest) {
+const stripe = new Stripe(process.env.StripeSecretKey!, {
+  apiVersion: '2025-02-24.acacia'
+});
+
+export async function POST() {
   try {
-    const body = await req.json();
+    // const body = await req.json();
     // const { items, email, billing } = body; 
     
     // const orangedItems = items.map((item: any) => ({
@@ -73,8 +77,10 @@ export async function POST(req: NextRequest) {
       id: session.id, 
       client_secret: session.client_secret 
     });
-  } catch (error: any) {
-    console.error("Error creating Stripe session:", error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    console.error("Error creating Stripe session:", error instanceof Error ? error.message : 'Unknown error');
+    return NextResponse.json({ 
+      error: error instanceof Error ? error.message : 'An unknown error occurred' 
+    }, { status: 500 });
   }
 }

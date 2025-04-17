@@ -36,8 +36,8 @@ const TokenComponent = () => {
         <h2>Overview</h2>
         <p>
           QuickQnect uses cloud-based computing to connect your model to meet
-          AISC & CISC requirements within minutes, often seconds. It's super
-          easy and helps you stick to schedule... and we know it's schedule,
+          AISC & CISC requirements within minutes, often seconds. It&apos;s super
+          easy and helps you stick to schedule... and we know it&apos;s schedule,
           schedule, schedule… When revisions are required, Qnect allows you to
           re-engineer and model revisions in seconds.1
         </p>
@@ -233,7 +233,7 @@ const TokenComponent = () => {
       <div className='max-w-7xl mx-auto text-[#000000] [&_h2]:mb-4 [&_h2]:text-[35px] [&_h2]:leading-10 [&_h2]:font-bold [&_p]:pt-2 [&_p]:text-[17px] sm:px-8 px-4 md:pt-16 p-10 [&_ul]:leading-loose [&_ul]:list-disc [&_ul]:list-inside [&_ul]:text-[#333333]'>
         <h2>Available Connection Types</h2>
         <p>
-          All connections are designed using Qnect's patented iterative process
+          All connections are designed using Qnect&apos;s patented iterative process
           yielding the most efficient connections in the market. All connections
           follow your user-defined preferences to match your exact requirements.
         </p>

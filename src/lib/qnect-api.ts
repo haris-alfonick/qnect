@@ -1,7 +1,17 @@
+interface QnectApiResponse {
+  code: number;
+  Msg?: string;
+  Info?: Record<string, unknown> | unknown[];
+  success?: boolean;
+  message?: string;
+  data?: Record<string, unknown>;
+  error?: string;
+}
+
 export async function callQnectApi(
   action: string,
   payload: Record<string, string | number>
-): Promise<any> {
+): Promise<QnectApiResponse> {
   // Convert payload to x-www-form-urlencoded format
   const formData = new URLSearchParams();
   for (const [key, value] of Object.entries(payload)) {
@@ -18,13 +28,24 @@ export async function callQnectApi(
     });
 
     if (!response.ok) {
-      throw new Error(`Qnect API error: ${response.statusText}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
-    return data;
+    return {
+      code: data.code || 0,
+      Msg: data.Msg,
+      Info: data.Info,
+      success: data.code === 1,
+      message: data.Msg,
+      data: data.Info
+    };
   } catch (error) {
-    console.error('Error calling Qnect API:', error);
-    throw error;
+    return {
+      code: 0,
+      Msg: error instanceof Error ? error.message : 'An unknown error occurred',
+      success: false,
+      error: error instanceof Error ? error.message : 'An unknown error occurred'
+    };
   }
 }
