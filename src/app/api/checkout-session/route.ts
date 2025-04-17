@@ -31,7 +31,6 @@ export async function POST(req: NextRequest) {
       success_url: `${req.nextUrl.origin}/success`,
       cancel_url: `${req.nextUrl.origin}/cancel`,
     });
-
     return NextResponse.json({ sessionId: session.id });
   } catch (error) {
     console.error(error);
