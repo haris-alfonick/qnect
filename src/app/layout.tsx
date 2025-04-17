@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Sen } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/header";
 import Footer from "@/components/footer";
 import StoreProvider from "./StoreProvider";
 
@@ -25,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${sen.className} antialiased`}>
         <StoreProvider>
-          <Header />
+          
           {children}
           <Footer />
         </StoreProvider>

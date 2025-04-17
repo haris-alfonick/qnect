@@ -157,13 +157,15 @@ const NavHeader = () => {
         </div>
       )}
       <div className='flex items-center justify-between py-4 sm:px-6 px-4 bg-transparent absolute top-0 z-10 w-full'>
-        <Image
-          src='/images/logo.png'
-          alt='logo'
-          width={125}
-          height={100}
-          className='mr-10'
-        />
+        <Link href="/">
+          <Image
+            src='/images/logo.png'
+            alt='logo'
+            width={125}
+            height={100}
+            className='mr-10'
+          />
+        </Link>
 
         <nav className='hidden lg:flex mr-auto'>
           <ul className='navMainLi flex space-x-4 lg:text-[13px] xl:text-[15px] [&>li]:text-white [&_ul_li]:text-[#333]'>
