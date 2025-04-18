@@ -24,14 +24,6 @@ export default function CheckoutPage() {
     type: 'success' | 'error' | null;
     message: string;
   }>({ type: null, message: '' });
-  const [formData, setFormData] = useState<{
-    firstName: string;
-    lastName: string;
-    username: string;
-    email: string;
-    referEmail?: string;
-    message?: string;
-  } | null>(null);
   const formRef = useRef<CheckoutFormRef>(null);
 
   useEffect(() => {
@@ -57,7 +49,6 @@ export default function CheckoutPage() {
     referEmail?: string;
     message?: string;
   }) => {
-    setFormData(data);
     handleCheckout(data);
   };
 

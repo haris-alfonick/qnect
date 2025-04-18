@@ -10,3 +10,4 @@ export const store = configureStore({
 // Infer the type of the store
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
+export type AppStore = typeof store

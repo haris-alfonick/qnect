@@ -1,9 +1,14 @@
 'use client';
 
+import { useState, forwardRef, useImperativeHandle } from 'react'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+// import { useForm } from 'react-hook-form'
+// import { zodResolver } from '@hookform/resolvers/zod'
+// import { z } from 'zod'
 import { Input } from '@/components/ui/input'
 import { Textarea } from './ui/textarea'
-import { Button } from './ui/button'
-import { useState, forwardRef, useImperativeHandle } from 'react'
+// import { Label } from './ui/label'
 
 interface CheckoutFormProps {
   onFormSubmit: (formData: {
@@ -161,12 +166,12 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
           onChange={handleChange}
         />
       </div>
-      <Button
+      {/* <Button
         type="submit"
         className='w-fit md:ml-0 mx-auto block h-11 text-base bg-[#333] text-white hover:text-[#333] border border-transparent hover:border hover:border-[#333] shadow-none rounded'
       >
         Proceed to Checkout
-      </Button>
+      </Button> */}
     </form>
   )
 });
