@@ -12,7 +12,7 @@ import {
   faXmark
 } from '@fortawesome/free-solid-svg-icons'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
-import { removeFromCart, setCartOpen, toggleCart, updateQuantity } from '@/lib/features/cart/cartSlice'
+import { removeFromCart, setCartOpen, updateQuantity } from '@/lib/features/cart/cartSlice'
 import CheckoutButton from './CheckoutButton'
 
 // LoadStripe
@@ -91,7 +91,7 @@ const NavHeader = () => {
 
                     <div className='flex flex-col'>
                       <span className='text-[10px] text-gray-500'>
-                        1 Year Payment
+                        {item.plan == "Free Trial" ? '30 Days Free Trial' : '1 Year Payment'}
                       </span>
                       <span className='font-semibold text-lg text-end'>
                         ${Number(item.price).toFixed(2)}
@@ -235,7 +235,7 @@ const NavHeader = () => {
           </ul>
         </nav>
 
-        <div className='hidden lg:flex items-center xl:space-x-4 space-x-2 xl:ml-8 ml-1 [&_.headerBtn]:px-3.5 [&_.headerBtn]:py-1.5 max-xl:[&_.headerBtn]:py-1.5 max-xl:[&_.headerBtn]:px-2 [&_.headerBtn]:text-[13px] [&_.headerBtn]:text-white [&_.headerBtn]:rounded-full xl:[&_.headerBtn]:text-base [&_.headerBtn]:w-auto '>
+        <div className='hidden lg:flex items-center xl:space-x-4 space-x-2 xl:ml-8 ml-1 [&_.headerBtn]:px-3.5 [&_.headerBtn]:py-1.5 max-xl:[&_.headerBtn]:py-1.5 max-xl:[&_.headerBtn]:px-2 [&_.headerBtn]:text-[13px] [&_.headerBtn]:text-white [&_.headerBtn]:rounded-full xl:[&_.headerBtn]:text-base [&_.headerBtn]:w-auto'>
           <button>
             <FontAwesomeIcon
               icon={faMagnifyingGlass}
@@ -244,7 +244,7 @@ const NavHeader = () => {
               color='white'
             />
           </button>
-          <button onClick={() => dispatch(toggleCart())}>
+          <button onClick={() => dispatch(setCartOpen(true))}>
             <FontAwesomeIcon
               icon={faBasketShopping}
               width={'auto'}
@@ -258,7 +258,7 @@ const NavHeader = () => {
         </div>
 
         <div className='lg:hidden [&_svg]:w-auto [&_svg]:h-6 '>
-          <button className='pr-3' onClick={() => dispatch(toggleCart())}>
+          <button className='pr-3' onClick={() => dispatch(setCartOpen(true))}>
             <FontAwesomeIcon icon={faBasketShopping} color='white' />
           </button>
           <button onClick={() => setIsMenuOpen(true)}>
