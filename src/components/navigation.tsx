@@ -100,8 +100,8 @@ const NavHeader = () => {
                   </div>
 
                   <div className='flex justify-between items-center mt-2 [&_p]:pb-1'>
-                    <div className='flex items-center gap-x-4 [&_select]:w-[100px] [&_select]:border [&_select]:rounded [&_select]:py-1 [&_select]:px-2'>
-                      <div>
+                    <div className='flex flex-col justify-start items-start gap-x-4 [&_select]:w-[100px] [&_select]:border [&_select]:rounded [&_select]:py-1 [&_select]:px-2'>
+                      <div className='flex gap-x-3'>
                         <p>Plan:</p>
                         <p>{item.plan}</p>
                         {/* <select>
@@ -109,7 +109,7 @@ const NavHeader = () => {
                           <option>Basic</option>
                         </select> */}
                       </div>
-                      <div>
+                      <div className='flex gap-x-3'>
                         <p>Quantity</p>
                         <div className='flex h-[34px] justify-start items-center border rounded [&_button]:px-2 w-fit [&_span]:px-4 [&_button]:text-[#D05129]'>
                           <button onClick={() => dispatch(updateQuantity({ id: item.id, type: 'decrement' }))}>-</button>
@@ -169,81 +169,77 @@ const NavHeader = () => {
 
         <nav className='hidden lg:flex mr-auto'>
           <ul className='navMainLi flex space-x-4 lg:text-[13px] xl:text-[15px] [&>li]:text-white [&_ul_li]:text-[#333]'>
-            <li className='relative border-b-2 border-[#85C451]'
-                onClick={() =>
-                  setIsSoftwareDropdownOpen(!isSoftwareDropdownOpen)
-                }
-              >
-                Software & Services
-                <FontAwesomeIcon icon={faAngleDown} width={16} height={16} className='pl-2' />
-          
-              {isSoftwareDropdownOpen && (
-                <div className='absolute left-0 mt-2 w-52 bg-white shadow-lg rounded p-4 z-30 [&_ul]:flex [&_ul]:flex-col [&_ul]:space-y-2'>
-                  <ul className='navMainLi'>
-                    <li>
-                      <Link href='#'>Early Connected Models</Link>
-                    </li>
-                    <li>
-                      <Link href='#'>Qnect for Autodesk Revit</Link>
-                    </li>
-                    <li>
-                      <Link href='#'>QuickQnect</Link>
-                    </li>
-                  </ul>
-                </div>
-              )}
+          <li className="relative group border-b-2 border-[#85C451]">
+              Software & Services
+              <FontAwesomeIcon icon={faAngleDown} width={16} height={16} className="pl-2" />
+              
+              <div className="absolute left-0 pt-2 w-52  z-30 group-hover:block hidden">
+                <ul className="navMainLi bg-white shadow-lg rounded p-4 space-y-1">
+                  <li>
+                    <Link href="https://www.qnect.com/early-connected-models">Early Connected Models</Link>
+                  </li>
+                  <li className='group/support relative'>
+                    <Link href="/">Qnect for Autodesk Revit</Link>
+                    <ul className='group-hover/support:block hidden absolute top-0 -right-36 bg-white shadow-lg rounded p-3'>
+                      <li><Link href="https://www.qnect.com/qnect-autodesk-revit/support">Customer Support</Link></li>
+                    </ul>
+                  </li>
+                  <li className='group/release relative'>
+                    <Link href="https://www.qnect.com/quickqnect">QuickQnect</Link>
+                    <ul className='group-hover/release:block hidden absolute top-0 -right-28 bg-white shadow-lg rounded p-3'>
+                      <li><Link href="https://www.qnect.com/release-notes">Release Notes</Link></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
             </li>
             <li>
-              <Link href='#'>Projects & Testimonials</Link>
+              <Link href='https://www.qnect.com/projects-testimonials'>Projects & Testimonials</Link>
             </li>
             <li>
-              <Link href='#'>Video Library</Link>
+              <Link href='https://www.qnect.com/videos'>Video Library</Link>
             </li>
-            <li className='relative'
-                onClick={() => setIsAboutDropdownOpen(!isAboutDropdownOpen)}
-              >
+            <li className='relative group'>
                 About Us
                 <FontAwesomeIcon icon={faAngleDown} width={16} height={16} className='pl-2' />
-              {isAboutDropdownOpen && (
-                <div className='absolute mt-2 w-52 bg-white shadow-lg rounded p-4 z-30 [&_ul]:flex [&_ul]:flex-col [&_ul]:space-y-2'>
-                  <ul className='navMainLi'>
+                <div className='absolute left-0 pt-2 w-52  z-30 group-hover:block hidden'>
+                  <ul className='navMainLi bg-white shadow-lg rounded p-4 space-y-1'>
                     <li>
-                      <Link href='#'>Team</Link>
+                      <Link href='https://www.qnect.com/team'>Team</Link>
                     </li>
                     <li>
-                      <Link href='#'>Careers</Link>
+                      <Link href='https://www.qnect.com/careers'>Careers</Link>
                     </li>
                     <li>
-                      <Link href='#'>Contact</Link>
+                      <Link href='https://www.qnect.com/contact-us'>Contact</Link>
                     </li>
                     <li>
-                      <Link href='#'>News/Blogs</Link>
+                      <Link href='https://www.qnect.com/blog'>News/Blogs</Link>
                     </li>
                     <li>
-                      <Link href='#'>Qonstruct Audiocast</Link>
+                      <Link href='https://www.qnect.com/qonstruct-audiocast'>Qonstruct Audiocast</Link>
                     </li>
                     <li>
-                      <Link href='#'>Events</Link>
+                      <Link href='https://www.qnect.com/events'>Events</Link>
                     </li>
                   </ul>
                 </div>
-              )}
             </li>
             <li>
-              <Link href='#'>Sign In</Link>
+              <Link href='https://app.qnect.com/sign-in/?hsCtaTracking=918221c6-078a-4946-b0d1-d209a098a820%7Cbdb26f12-aca1-4773-b130-48f4bb268c6b'>Sign In</Link>
             </li>
           </ul>
         </nav>
 
         <div className='hidden lg:flex items-center xl:space-x-4 space-x-2 xl:ml-8 ml-1 [&_.headerBtn]:px-3.5 [&_.headerBtn]:py-1.5 max-xl:[&_.headerBtn]:py-1.5 max-xl:[&_.headerBtn]:px-2 [&_.headerBtn]:text-[13px] [&_.headerBtn]:text-white [&_.headerBtn]:rounded-full xl:[&_.headerBtn]:text-base [&_.headerBtn]:w-auto '>
-          <button>
+          {/* <button>
             <FontAwesomeIcon
               icon={faMagnifyingGlass}
               width={'auto'}
               height={20}
               color='white'
             />
-          </button>
+          </button> */}
           <button onClick={() => dispatch(toggleCart())}>
             <FontAwesomeIcon
               icon={faBasketShopping}
@@ -253,8 +249,8 @@ const NavHeader = () => {
             />
           </button>
 
-          <button className='headerBtn border border-transparent bg-[#CF5127] hover:bg-transparent hover:border hover:border-white'>Request Demo</button>
-          <button className='headerBtn border border-transparent bg-[#85C451] hover:bg-transparent hover:border hover:border-white'>Contact Us</button>
+          <Link  href="https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/click?encryptedPayload=AVxigLLyBm5boAh5TN7zvyXe18NU3V7hGyL0ALywbkMv0ahB7OpBkUT8IqTFnmwXGpvnoEPulc4GUtA4NP1BuS91PEWxCmnPfF9NhsghW2%2BXMMWC4tq3va7Ds%2F7erZdvDnIoX6HYTBqZYVyapI5Els2ywmARadR9XnnHHZ5jCf8q&portalId=4536105&webInteractiveId=370237410323&webInteractiveContentId=180078916265&containerType=EMBEDDED&pageUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us%3FhsCtaAttrib%3D180078916144&pageTitle=Contact+Qnect&referrer=&userAgent=Mozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%3B+rv%3A137.0%29+Gecko%2F20100101+Firefox%2F137.0&hutk=32088049f340575a28fb8c38ed6ef497&hssc=32748897.3.1744984506700&hstc=32748897.32088049f340575a28fb8c38ed6ef497.1740993391383.1744977174960.1744984506700.7&pageId=6175886349&analyticsPageId=6175886349&hsfp=220602648&canonicalUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us&contentType=standard-page" className='headerBtn border border-transparent bg-[#CF5127] hover:bg-transparent hover:border hover:border-white'>Request Demo</Link>
+          <Link href="https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/click?encryptedPayload=AVxigLLW9Fd2Jf0Ac1NkgeEJC4DQpaKKzeY5UzUoSr5rfNWr8lekxNWZcmqtAMfqpf7dxPf4%2B1WhaW4SHJUtK68RgAjKy7%2F9Ds90beDcTePUo1Ph9%2F3B04t0vcFP%2Fh0N0wh9jNAfrc473yI344NdLkXsO5lmxFU7yc2FfaXfDxmN9MZ8t8FS&portalId=4536105&webInteractiveId=370240486692&webInteractiveContentId=180078916144&containerType=EMBEDDED&pageUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us%3FhsCtaAttrib%3D180078916144&pageTitle=Contact+Qnect&referrer=&userAgent=Mozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%3B+rv%3A137.0%29+Gecko%2F20100101+Firefox%2F137.0&hutk=32088049f340575a28fb8c38ed6ef497&hssc=32748897.3.1744984506700&hstc=32748897.32088049f340575a28fb8c38ed6ef497.1740993391383.1744977174960.1744984506700.7&pageId=6175886349&analyticsPageId=6175886349&hsfp=220602648&canonicalUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us&contentType=standard-page" className='headerBtn border border-transparent bg-[#85C451] hover:bg-transparent hover:border hover:border-white'>Contact Us</Link>
         </div>
 
         <div className='lg:hidden [&_svg]:w-auto [&_svg]:h-6 '>
@@ -270,13 +266,15 @@ const NavHeader = () => {
       {isMenuOpen && (
         <div className='lg:hidden fixed top-0 left-0 bottom-0 w-full h-full bg-white z-30 overflow-y-auto'>
           <div className='flex justify-between items-center p-3 px-4 border-b'>
-            <Image
-              src='/images/logo.png'
-              alt='logo'
-              width={125}
-              height={100}
-              className='mr-10'
-            />
+            <Link href="/">
+              <Image
+                src='/images/logo.png'
+                alt='logo'
+                width={125}
+                height={100}
+                className='mr-10'
+                />
+            </Link>
             <button onClick={() => setIsMenuOpen(false)}>
               <FontAwesomeIcon
                 icon={faXmark}
@@ -310,19 +308,20 @@ const NavHeader = () => {
                       <Link href='#'>Early Connected Models</Link>
                     </li>
                     <li>
-                      <Link href='#'>Qnect for Autodesk Revit</Link>
+                      <Link href="https://www.qnect.com/qnect-autodesk-revit/support">Customer Support</Link>
                     </li>
                     <li>
-                      <Link href='#'>QuickQnect</Link>
+                      <Link href='https://www.qnect.com/quickqnect'>QuickQnect</Link>
                     </li>
+                    <li><Link href="https://www.qnect.com/release-notes">Release Notes</Link></li>
                   </ul>
                 )}
               </li>
               <li>
-                <Link href='#'>Projects & Testimonials</Link>
+                <Link href='https://www.qnect.com/projects-testimonials'>Projects & Testimonials</Link>
               </li>
               <li>
-                <Link href='#'>Video Library</Link>
+                <Link href='https://www.qnect.com/videos'>Video Library</Link>
               </li>
               <li>
                 <button
@@ -334,38 +333,38 @@ const NavHeader = () => {
                 {isAboutDropdownOpen && (
                   <ul className='mt-2 ml-4 space-y-2'>
                     <li>
-                      <Link href='#'>Team</Link>
+                      <Link href='https://www.qnect.com/team'>Team</Link>
                     </li>
                     <li>
-                      <Link href='#'>Careers</Link>
+                      <Link href='https://www.qnect.com/careers'>Careers</Link>
                     </li>
                     <li>
-                      <Link href='#'>Contact</Link>
+                      <Link href='https://www.qnect.com/contact-us'>Contact</Link>
                     </li>
                     <li>
-                      <Link href='#'>News/Blogs</Link>
+                      <Link href='https://www.qnect.com/blog'>News/Blogs</Link>
                     </li>
                     <li>
-                      <Link href='#'>Qonstruct Audiocast</Link>
+                      <Link href='https://www.qnect.com/qonstruct-audiocast'>Qonstruct Audiocast</Link>
                     </li>
                     <li>
-                      <Link href='#'>Events</Link>
+                      <Link href='https://www.qnect.com/events'>Events</Link>
                     </li>
                   </ul>
                 )}
               </li>
               <li>
-                <Link href='#'>Sign In</Link>
+                <Link href='https://app.qnect.com/sign-in/?hsCtaTracking=918221c6-078a-4946-b0d1-d209a098a820%7Cbdb26f12-aca1-4773-b130-48f4bb268c6b'>Sign In</Link>
               </li>
             </ul>
 
             <div className='mt-4 flex justify-between space-x-3'>
-              <button className='bg-[#CF5127] text-white py-2 px-4 rounded-full text-md w-full'>
+              <Link href="https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/click?encryptedPayload=AVxigLJ8UzkW0hkfLdDYwIB8zsG46SHFFErkVHUUio6eBUMg2WSA%2BCwPIW4JW6rhPpp7rgu8UIQ0BnIJInBMs9CSlcJtbUCmdddDCnaFAOamC5qbzgpR41bfn3dP3WWIgG1qqWki6UkAyjdtkElVCLVpTVocT4YtJy11t32dKKSy&portalId=4536105&webInteractiveId=370237410323&webInteractiveContentId=180078916265&containerType=EMBEDDED&pageUrl=https%3A%2F%2Fwww.qnect.com%2Fdemo%3FhsCtaAttrib%3D180078916265&pageTitle=Schedule+a+Demo&referrer=&userAgent=Mozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%3B+rv%3A137.0%29+Gecko%2F20100101+Firefox%2F137.0&hutk=32088049f340575a28fb8c38ed6ef497&hssc=32748897.1.1744984506700&hstc=32748897.32088049f340575a28fb8c38ed6ef497.1740993391383.1744977174960.1744984506700.7&pageId=68908908911&analyticsPageId=68908908911&hsfp=220602648&canonicalUrl=https%3A%2F%2Fwww.qnect.com%2Fdemo&contentType=standard-page" className='bg-[#CF5127] text-white py-2 px-4 rounded-full text-md w-full text-center'>
                 Request Demo
-              </button>
-              <button className='bg-[#85C451] text-white py-2 px-4 rounded-full text-md w-full'>
+              </Link>
+              <Link href="https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/click?encryptedPayload=AVxigLLW9Fd2Jf0Ac1NkgeEJC4DQpaKKzeY5UzUoSr5rfNWr8lekxNWZcmqtAMfqpf7dxPf4%2B1WhaW4SHJUtK68RgAjKy7%2F9Ds90beDcTePUo1Ph9%2F3B04t0vcFP%2Fh0N0wh9jNAfrc473yI344NdLkXsO5lmxFU7yc2FfaXfDxmN9MZ8t8FS&portalId=4536105&webInteractiveId=370240486692&webInteractiveContentId=180078916144&containerType=EMBEDDED&pageUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us%3FhsCtaAttrib%3D180078916144" className='bg-[#85C451] text-white py-2 px-4 rounded-full text-md w-full text-center'>
                 Contact Us
-              </button>
+              </Link>
             </div>
           </nav>
         </div>
