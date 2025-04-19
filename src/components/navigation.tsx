@@ -13,6 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import { removeFromCart, setCartOpen, updateQuantity } from '@/lib/features/cart/cartSlice'
+import { useRouter } from 'next/navigation'
 // import CheckoutButton from './CheckoutButton'
 
 // LoadStripe
@@ -20,6 +21,7 @@ import { removeFromCart, setCartOpen, updateQuantity } from '@/lib/features/cart
 // import {EmbeddedCheckoutProvider, EmbeddedCheckout} from '@stripe/react-stripe-js'
 
 const NavHeader = () => {
+  const router = useRouter()
   // const stripePromise = loadStripe(
   //   process.env.NEXT_PUBLIC_StripePublishableKey!
   // );
@@ -45,7 +47,11 @@ const NavHeader = () => {
   // }, [])
 
   // const options = {fetchClientSecret}
-
+function handleCheckout(){
+  
+  dispatch(setCartOpen(false))
+  router.push('/checkout')
+}
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSoftwareDropdownOpen, setIsSoftwareDropdownOpen] = useState(false)
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false)
@@ -147,7 +153,7 @@ const NavHeader = () => {
                 <span>${cartItemsData.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}</span>
               </div>
               <p className='text-sm'>Tax is calculated at checkout</p>
-              <Link className='bg-[#333] text-white hover:opacity-90   w-full block text-center py-2 rounded-lg' href="/checkout">Checkout</Link>
+              <button onClick={() => handleCheckout()}>Checkout</button>
               {/* <CheckoutButton /> */}
               {/* <button>Checkout</button> */}
               <p className='text-xs mt-2'>
