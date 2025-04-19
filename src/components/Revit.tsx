@@ -3,7 +3,7 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons/faCircleXmark";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import FreeTrial from "./FreeTrial";
+// import FreeTrial from "./FreeTrial";
 import { useAppDispatch } from "@/lib/hooks";
 import { addToCart, setCartOpen } from "@/lib/features/cart/cartSlice";
 
@@ -12,12 +12,12 @@ export default function RevitPage() {
 
   const handleRevitLicense = (license: string) => {
     const item = {
-      id: license == 'express' ? '1' : '2',
+      id: license === 'Free Trial' ? '1' : license === 'express' ? '2' : '3',
       name: 'Revit',
       plan: license,
       quantity: 1,
-      price: license == 'express' ? 950 : 1900
-    };
+      price: license === 'Free Trial' ? 0 : license == 'express' ? 950 : 1900
+    };    
 
     dispatch(addToCart(item))
     dispatch(setCartOpen(true))
@@ -97,7 +97,9 @@ export default function RevitPage() {
               <li><span>Multiple License</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleXmark} /></span></li>
               <li><span>Time Period</span> <span className="font-bold iconPlanText">30 Days</span></li>
               <li className="!mt-8 !block lg:!justify-start !justify-center lg:text-start text-center !border-b-0"><strong className="!px-0">Get The Great Our Service</strong></li>
-            <div className="lg:!hidden !block w-fit m-auto !mt-2 [&_li]:!block"><FreeTrial /></div>
+            <div className="lg:!hidden !block w-fit m-auto !mt-2 [&_li]:!block"><button onClick={() => handleRevitLicense('trail')} className='border border-[#CF5127] text-[#CF5127] hover:text-white hover:bg-[#CF5127] lg:py-1 py-2 sm:px-0 px-6 w-full rounded-md'>
+              Get Free Trial
+            </button></div>
           </ul>
         </div>
         <div className="lg:col-span-2 sm:col-span-4 col-span-5 lg:block hidden">
@@ -116,7 +118,8 @@ export default function RevitPage() {
             <li className="lg:mt-6"><strong>$0</strong></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><strong>30 Days</strong></li>
-            <FreeTrial />
+            <li className='lg:mt-5 lg:!px-2 !px-0'><button onClick={() => handleRevitLicense('Free Trial')} className='border border-[#CF5127] text-[#CF5127] hover:text-white hover:bg-[#CF5127] lg:py-1 py-2 sm:px-0 px-6 w-full rounded-md'>Get Free Trial</button></li>
+            {/* <FreeTrial /> */}
           </ul>
         </div>
         <div className="hidden lg:grid lg:col-span-2 sm:col-span-4 col-span-5">

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Sen } from "next/font/google";
 import "./globals.css";
-import Footer from "@/components/footer";
-import StoreProvider from "./StoreProvider";
+import { Providers } from "./providers";
+import CartProvider from "@/components/CartProvider";
 
 const sen = Sen({
   weight: ["400", "500", "600", "700", "800"],
@@ -11,8 +11,8 @@ const sen = Sen({
 })
 
 export const metadata: Metadata = {
-  title: "Qnect | Home",
-  description: "Made By Augmentifyinc",
+  title: "Qnect",
+  description: "Qnect - Your Connection Solution",
 };
 
 export default function RootLayout({
@@ -23,11 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sen.className} antialiased`}>
-        <StoreProvider>
-          
-          {children}
-          <Footer />
-        </StoreProvider>
+        <Providers>
+          <CartProvider>
+            {children}
+          </CartProvider>
+        </Providers>
       </body>
     </html>
   );

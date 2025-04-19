@@ -1,3 +1,4 @@
+import Footer from "@/components/footer"
 import Header from "@/components/header"
 import TokenComponent from "@/components/Token"
 
@@ -6,6 +7,7 @@ const Token = () => {
     <>
     <Header />
     <TokenComponent />
+    <Footer />
     </>
     
   )

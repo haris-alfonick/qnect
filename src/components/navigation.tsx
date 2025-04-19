@@ -12,8 +12,8 @@ import {
   faXmark
 } from '@fortawesome/free-solid-svg-icons'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
-import { removeFromCart, setCartOpen, toggleCart, updateQuantity } from '@/lib/features/cart/cartSlice'
-import CheckoutButton from './CheckoutButton'
+import { removeFromCart, setCartOpen, updateQuantity } from '@/lib/features/cart/cartSlice'
+// import CheckoutButton from './CheckoutButton'
 
 // LoadStripe
 // import {loadStripe} from '@stripe/stripe-js';
@@ -91,7 +91,7 @@ const NavHeader = () => {
 
                     <div className='flex flex-col'>
                       <span className='text-[10px] text-gray-500'>
-                        1 Year Payment
+                        {item.plan == "Free Trial" ? '30 Days Free Trial' : '1 Year Payment'}
                       </span>
                       <span className='font-semibold text-lg text-end'>
                         ${Number(item.price).toFixed(2)}
@@ -147,7 +147,8 @@ const NavHeader = () => {
                 <span>${cartItemsData.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}</span>
               </div>
               <p className='text-sm'>Tax is calculated at checkout</p>
-              <CheckoutButton />
+              <Link className='bg-[#333] text-white hover:opacity-90   w-full block text-center py-2 rounded-lg' href="/checkout">Checkout</Link>
+              {/* <CheckoutButton /> */}
               {/* <button>Checkout</button> */}
               <p className='text-xs mt-2'>
                 Credit and debit cards, PayPal, bank payments, and ACH accepted.
@@ -240,7 +241,7 @@ const NavHeader = () => {
               color='white'
             />
           </button> */}
-          <button onClick={() => dispatch(toggleCart())}>
+          <button onClick={() => dispatch(setCartOpen(true))}>
             <FontAwesomeIcon
               icon={faBasketShopping}
               width={'auto'}
@@ -254,7 +255,7 @@ const NavHeader = () => {
         </div>
 
         <div className='lg:hidden [&_svg]:w-auto [&_svg]:h-6 '>
-          <button className='pr-3' onClick={() => dispatch(toggleCart())}>
+          <button className='pr-3' onClick={() => dispatch(setCartOpen(true))}>
             <FontAwesomeIcon icon={faBasketShopping} color='white' />
           </button>
           <button onClick={() => setIsMenuOpen(true)}>
