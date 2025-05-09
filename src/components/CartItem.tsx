@@ -26,6 +26,8 @@ export default function CartItem({ item }: CartItemProps) {
     dispatch(updateQuantity({ id: item.id, type }));
   };
 
+  const shouldShowQuantity = item.plan !== 'Free Trial' && item.name !== 'Token';
+
   return (
     <div className="flex items-center justify-between p-4 border rounded-lg">
       <div className="flex-1">
@@ -35,22 +37,24 @@ export default function CartItem({ item }: CartItemProps) {
       </div>
       
       <div className="flex items-center space-x-4">
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() => handleQuantityChange('decrement')}
-            className="p-1 rounded-full hover:bg-gray-100"
-            disabled={item.quantity <= 1}
-          >
-            <FontAwesomeIcon icon={faMinus} className="w-4 h-4" />
-          </button>
-          <span className="w-8 text-center">{item.quantity}</span>
-          <button
-            onClick={() => handleQuantityChange('increment')}
-            className="p-1 rounded-full hover:bg-gray-100"
-          >
-            <FontAwesomeIcon icon={faPlus} className="w-4 h-4" />
-          </button>
-        </div>
+        {shouldShowQuantity && (
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => handleQuantityChange('decrement')}
+              className="p-1 rounded-full hover:bg-gray-100"
+              disabled={item.quantity <= 1}
+            >
+              <FontAwesomeIcon icon={faMinus} className="w-4 h-4" />
+            </button>
+            <span className="w-8 text-center">{item.quantity}</span>
+            <button
+              onClick={() => handleQuantityChange('increment')}
+              className="p-1 rounded-full hover:bg-gray-100"
+            >
+              <FontAwesomeIcon icon={faPlus} className="w-4 h-4" />
+            </button>
+          </div>
+        )}
         
         <button
           onClick={handleRemove}

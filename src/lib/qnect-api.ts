@@ -1,4 +1,4 @@
-interface QnectApiResponse {
+export interface QnectApiResponse {
   code: number;
   Msg?: string;
   Info?: Record<string, unknown> | unknown[];
@@ -49,7 +49,7 @@ export async function callQnectApi(
   }
 
   try {
-    const response = await fetch('https://dev1.app.qnect.com/cgi-bin/InitiateDBImport/QnectApi.cgi', {
+    const response = await fetch('http://app.qnect.com/cgi-bin/InitiateDBImport/QnectApi.cgi', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

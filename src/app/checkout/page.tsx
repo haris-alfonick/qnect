@@ -60,12 +60,33 @@ export default function CheckoutPage() {
     referEmail?: string;
     message?: string;
   }) => {
-    try {
-      setIsProcessing(true);
-      setStatus({ type: null, message: '' });
+    setIsProcessing(true);
+    setStatus({ type: null, message: '' });
 
-      // If total is 0 (free trial), process directly without Stripe
-      if (total === 0) {
+    try {
+      // Verify email first
+      const userType = items[0]?.plan === 'Free Trial' ? 'REVIT' : 'QNECT';
+      const verifyResponse = await fetch('/api/verify-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          userType: 'QNECT'
+        }),
+      });
+
+      const verifyData = await verifyResponse.json();
+      if (!verifyData.success) {
+        throw new Error(verifyData.message || 'Email verification failed');
+      }
+
+      // Check if it's a free trial
+      const isFreeTrial = items.length === 1 && items[0].plan === 'Free Trial';
+
+      if (isFreeTrial) {
+        // Process free trial directly
         const response = await fetch('/api/free-trial', {
           method: 'POST',
           headers: {
@@ -83,41 +104,41 @@ export default function CheckoutPage() {
           }),
         });
 
-        const data = await response.json();
-
-        if (response.ok) {
-          setStatus({
-            type: 'success',
-            message: 'Free trial activated successfully! You will receive an email with instructions shortly.'
-          });
-          // Redirect to success page after 3 seconds
-          setTimeout(() => {
-            router.push('/success');
-          }, 3000);
-        } else {
-          setStatus({
-            type: 'error',
-            message: data.error || 'Failed to activate free trial. Please try again.'
-          });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to process free trial');
         }
+
+        setStatus({
+          type: 'success',
+          message: 'Free trial activated successfully! You will receive an email with instructions shortly.'
+        });
+        
+        // Redirect to success page after 3 seconds
+        setTimeout(() => {
+          router.push('/success');
+        }, 3000);
         return;
       }
 
-      // For paid items, proceed with Stripe checkout
-      const stripeItems = items.map((item) => ({
-        name: item.name,
-        price: item.price,
-        image: `/images/${item.name === "Revit" ? "revit" : "coin"}.png`,
-        quantity: item.quantity,
-      }));
+      // For paid items, require Autodesk token
+      const autodeskToken = sessionStorage.getItem('autodesk_token');
+      if (!autodeskToken) {
+        throw new Error('Autodesk authentication required');
+      }
 
+      // Create Stripe checkout session
       const response = await fetch('/api/checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          items: stripeItems,
+        body: JSON.stringify({
+          items: items.map(item => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
           customer: {
             firstName: formData.firstName,
             lastName: formData.lastName,
@@ -125,23 +146,29 @@ export default function CheckoutPage() {
             email: formData.email,
             referEmail: formData.referEmail,
             message: formData.message
-          }
+          },
+          autodesk_token: autodeskToken
         }),
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create checkout session');
+      }
+
+      const { sessionId } = await response.json();
       const stripe = await stripePromise;
-      
+
       if (stripe) {
         await stripe.redirectToCheckout({
-          sessionId: data.sessionId,
+          sessionId,
         });
       }
     } catch (error) {
       console.error('Error during checkout:', error);
       setStatus({
         type: 'error',
-        message: 'An error occurred during checkout. Please try again.'
+        message: error instanceof Error ? error.message : 'An error occurred during checkout. Please try again.'
       });
     } finally {
       setIsProcessing(false);
@@ -197,7 +224,8 @@ export default function CheckoutPage() {
             <CheckoutField ref={formRef} onFormSubmit={handleFormSubmit} />
           </div>
 
-          <div className="lg:col-span-5 md:col-span-6 col-span-12 md:order-2 order-1 space-y-6 border border-[#e5e7eb] py-4 px-5 rounded">
+          <div className='lg:col-span-5 md:col-span-6 col-span-12 md:order-2 order-1'>
+            <div className="lg:col-span-5 md:col-span-6 col-span-12 md:order-2 order-1 space-y-6 border border-[#e5e7eb] py-4 px-5 rounded">
             <h2 className="md:text-2xl text-xl font-semibold">Order Summary</h2>
 
             {items.map((item) => (
@@ -234,6 +262,8 @@ export default function CheckoutPage() {
                 'Proceed to Payment'
               )}
             </button>
+          </div>
+            
           </div>
         </div>
       </div>
