@@ -65,7 +65,7 @@ export default function CheckoutPage() {
 
     try {
       // Verify email first
-      const userType = items[0]?.plan === 'Free Trial' ? 'REVIT' : 'QNECT';
+      // const userType = items[0]?.plan === 'Free Trial' ? 'REVIT' : 'QNECT';
       const verifyResponse = await fetch('/api/verify-email', {
         method: 'POST',
         headers: {

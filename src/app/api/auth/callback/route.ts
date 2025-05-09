@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { loadStripe } from '@stripe/stripe-js';
 import { cookies } from 'next/headers';
 
 export async function GET(request: Request) {
@@ -50,8 +49,8 @@ export async function GET(request: Request) {
     const userProfile = await profileResponse.json();
     const userEmail = userProfile.emailId;
     console.log(userEmail);
+
     // Create Stripe checkout session
-    const stripe = await loadStripe(process.env.NEXT_PUBLIC_StripePublishableKey!);
     const checkoutResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/checkout-session`, {
       method: 'POST',
       headers: {
@@ -70,10 +69,10 @@ export async function GET(request: Request) {
       throw new Error('Failed to create checkout session');
     }
 
-    const { sessionId } = await checkoutResponse.json();
+    const { url } = await checkoutResponse.json();
 
     // Create a response with redirect
-    const redirectResponse = NextResponse.redirect(new URL('/success', process.env.NEXT_PUBLIC_BASE_URL));
+    const redirectResponse = NextResponse.redirect(url || new URL('/success', process.env.NEXT_PUBLIC_BASE_URL));
     
     // Set cookies for client-side access
     redirectResponse.cookies.set('autodesk_token', access_token, {

@@ -18,7 +18,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     console.log('Request body:', body);
     
-    const { items, customer, autodesk_token } = body;
+    // const { items, customer, autodesk_token } = body;
+    const { items, customer } = body;
 
     if (!items || !customer) {
       console.error('Missing required fields:', { items, customer });
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      line_items: items.map((item: any) => ({
+      line_items: items.map((item: CartItem) => ({
         price_data: {
           currency: "usd",
           product_data: {

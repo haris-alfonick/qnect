@@ -79,11 +79,11 @@ const NavHeader = () => {
     router.push('/checkout');
   }
 
-  const handleProceedToCheckout = () => {
-    setShowAlertDialog(false);
-    dispatch(setCartOpen(false));
-    router.push('/checkout');
-  };
+  // const handleProceedToCheckout = () => {
+  //   setShowAlertDialog(false);
+  //   dispatch(setCartOpen(false));
+  //   router.push('/checkout');
+  // };
 
   return (
     <>
