@@ -3,7 +3,7 @@ import { addToCart, setCartOpen } from '@/lib/features/cart/cartSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import Link from 'next/link'
 import { useState } from 'react';
-import CheckoutButton from './CheckoutButton';
+// import CheckoutButton from './CheckoutButton';
 
 const TokenComponent = () => {
   const [selected, setSelected] = useState(4750);
