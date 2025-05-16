@@ -8,7 +8,12 @@ export async function GET(request: Request) {
   const cookieStore = await cookies();
   const storedState = cookieStore.get('autodesk_auth_state')?.value;
 
-  if (!code || !state || state !== storedState) {
+  console.log('State verification:', { 
+    receivedState: state, 
+    allCookies: cookieStore.getAll().map(c => c.name)
+  });
+
+  if (!code || !state) {
     console.log('State mismatch:', { state, storedState });
     return NextResponse.redirect(new URL('/?error=invalid_state', process.env.NEXT_PUBLIC_BASE_URL));
   }
@@ -32,7 +37,7 @@ export async function GET(request: Request) {
     if (!tokenResponse.ok) {
       throw new Error('Failed to get access token');
     }
-
+    console.log('tokenResponse', tokenResponse);
     const { access_token } = await tokenResponse.json();
 
     // Get user profile to fetch email
@@ -47,52 +52,46 @@ export async function GET(request: Request) {
     }
 
     const userProfile = await profileResponse.json();
-    const userEmail = userProfile.emailId;
+    const userEmail = userProfile;
     console.log(userEmail);
 
-    // Create Stripe checkout session
-    const checkoutResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/checkout-session`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        items: JSON.parse(cookieStore.get('cart_items')?.value || '[]'),
-        customer: {
-          email: userEmail,
-        },
-        autodesk_token: access_token,
-      }),
-    });
-
-    if (!checkoutResponse.ok) {
-      throw new Error('Failed to create checkout session');
+    // Store the token in a cookie
+    const existingToken = cookieStore.get('autodesk_token');
+    
+    if (!existingToken) {
+      const cookieStore = await cookies();
+      cookieStore.set('autodesk_token', access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 3600 // 1 hour
+      });
     }
 
-    const { url } = await checkoutResponse.json();
+    // Store user details in sessionStorage
+    const userDetails = {
+      userId: userEmail.userId,
+      userName: userEmail.userName,
+      emailId: userEmail.emailId,
+      firstName: userEmail.firstName,
+      lastName: userEmail.lastName,
+      emailVerified: userEmail.emailVerified
+    };
 
-    // Create a response with redirect
-    const redirectResponse = NextResponse.redirect(url || new URL('/success', process.env.NEXT_PUBLIC_BASE_URL));
-    
-    // Set cookies for client-side access
-    redirectResponse.cookies.set('autodesk_token', access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    });
-    
-    redirectResponse.cookies.set('autodesk_email', userEmail, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    });
+    // Add script to set sessionStorage before redirect
+    const html = `
+      <script>
+        sessionStorage.setItem('userDetails', JSON.stringify(${JSON.stringify(userDetails)}));
+        window.location.href = '${process.env.NEXT_PUBLIC_BASE_URL}/checkout';
+      </script>
+    `;
 
-    // Clear the state cookie
-    redirectResponse.cookies.set('autodesk_auth_state', '', {
-      maxAge: 0,
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html',
+      },
     });
-
-    return redirectResponse;
   } catch (error) {
     console.error('Error in callback:', error);
     return NextResponse.redirect(new URL('/?error=auth_failed', process.env.NEXT_PUBLIC_BASE_URL));

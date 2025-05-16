@@ -15,22 +15,24 @@ export async function POST(req: Request) {
 
     // Process the free trial with transaction data
     const purchaseData = {
-      action: 'TRIAL',
+      action: 'revit_license',
       txn_id: `TRIAL-${Date.now()}`,
-      custom: 'Free Trial',
-      payment_status: 'Completed' as const,
-      item_number: 'REVIT-TRIAL',
-      item_name: 'Qnect for Autodesk Revit',
+      company_id: '',
       quantity: 1,
-      payment_gross: 0.00,
       txn_type: 'TRIAL' as const,
       last_name: customer.lastName,
       first_name: customer.firstName,
-      user_name: customer.username,
       buyer_adsk_account: customer.email,
       referer_account: customer.referEmail
-    };
 
+      //custom: 'Free Trial',
+      //payment_status: 'Completed' as const,
+      //item_number: 'REVIT-TRIAL',
+      //item_name: 'Qnect for Autodesk Revit',
+      //payment_gross: 0.00,
+      //user_name: customer.username,
+    };
+    console.log('purchaseData', purchaseData);
     const purchaseResponse = await processRevitPurchase(purchaseData);
     if (purchaseResponse.code !== 1) {
       return NextResponse.json(

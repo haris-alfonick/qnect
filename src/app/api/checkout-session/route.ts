@@ -18,8 +18,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     console.log('Request body:', body);
     
-    // const { items, customer, autodesk_token } = body;
-    const { items, customer } = body;
+    const { items, customer, company_id } = body;
 
     if (!items || !customer) {
       console.error('Missing required fields:', { items, customer });
@@ -61,7 +60,8 @@ export async function POST(req: NextRequest) {
           referEmail: customer.referEmail,
           message: customer.message,
           token_reference: tokenReference
-        })
+        }),
+        company_id: company_id || ''
       }
     });
 

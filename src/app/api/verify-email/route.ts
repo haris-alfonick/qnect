@@ -4,7 +4,7 @@ import { verifyEmail } from '@/lib/qnect-api';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    console.log('body', body);
+    // console.log('body', body);
     const { email, userType } = body;
 
     if (!email || !userType) {
@@ -24,10 +24,10 @@ export async function POST(request: Request) {
 
     // Call Qnect API to verify email
     const response = await verifyEmail(email, userType as 'REVIT' | 'TEKLA' | 'QNECT');
-    console.log('response', response);
+    // console.log('response', response);
 
     // Check response code
-    if (response.code === 1) {
+    if (response.code === 0) {
       return NextResponse.json({ 
         success: true,
         message: 'Email verified successfully'
