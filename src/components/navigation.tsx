@@ -120,7 +120,7 @@ const NavHeader = () => {
               const authUrl = new URL('https://developer.api.autodesk.com/authentication/v2/authorize');
               authUrl.searchParams.append('response_type', 'code');
               authUrl.searchParams.append('client_id', process.env.NEXT_PUBLIC_AUTODESK_CLIENT_ID!);
-              authUrl.searchParams.append('redirect_uri', `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`);
+              authUrl.searchParams.append('redirect_uri', `https://qnect-zeta.vercel.app/api/auth/callback`);
               authUrl.searchParams.append('scope', 'data:read');
               
               // Generate and store a random state value
@@ -310,8 +310,11 @@ const NavHeader = () => {
                 </div>
             </li>
             <li>
-              <Link href='https://app.qnect.com/sign-in/?hsCtaTracking=918221c6-078a-4946-b0d1-d209a098a820%7Cbdb26f12-aca1-4773-b130-48f4bb268c6b'>Sign In</Link>
+              <Link href="tokens">Tokens</Link>
             </li>
+            {/* <li>
+              <Link href='https://app.qnect.com/sign-in/?hsCtaTracking=918221c6-078a-4946-b0d1-d209a098a820%7Cbdb26f12-aca1-4773-b130-48f4bb268c6b'>Sign In</Link>
+            </li> */}
           </ul>
         </nav>
 
