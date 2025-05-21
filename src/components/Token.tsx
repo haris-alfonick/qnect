@@ -72,19 +72,19 @@ const TokenComponent = () => {
         <div className='lg:col-span-4 col-span-12 [&_span]:text-[#D05129] [&_span]:bg-[#FFBEAA] [&_span]:px-4 [&_span]:py-2 [&_span]:rounded-full [&_span]:text-base [&_span]:font-medium shadow-[0px_0px_20px_-4px_#dadde8] rounded-xl py-8 px-9 lg:mx-0 mx-4'>
           <span>Per Successful Qnection</span>
           <div className='flex items-center [&_strong]:text-[60px] [&_p]:text-[23px] [&_p]:pl-2 pt-3'>
-            <strong>01</strong>
+            <strong>1</strong>
             <p>TOKEN</p>
           </div>
-          <p className='xl:text-lg font-medium'>MODELING</p>
-          <button className='bg-[#CF5127] text-white text-2xl py-2 px-4 rounded-xl w-full lg:mt-12 mt-6'>
+          <p className='xl:text-lg font-medium lg:mb-14 mb-6'>MODELING</p>
+          {/* <button className='bg-[#CF5127] text-white text-2xl py-2 px-4 rounded-xl w-full lg:mt-12 mt-6'>
             Select
-          </button>
+          </button> */}
 
           <div className='border-t-2 mt-7'>
             <ul className='tokenPoint [&_li]:xl:text-[15px] [&_li]:lg:text-[12px] text-sm pt-3'>
               <li>Early Issue Detection</li>
               <li>Connection modeling in Tekla</li>
-              <li>Customization and QAQC of detailing</li>
+              <li>Customization and QA/QC of detailing</li>
               <li>Model change management</li>
               <li>Unlimited runs per joint</li>
               <li>Fabricator preferences and aliases</li>
@@ -97,19 +97,19 @@ const TokenComponent = () => {
         <div className='lg:inline hidden lg:col-span-4 col-span-12 [&_span]:text-[#035388] [&_span]:bg-[#E3F8FF] [&_span]:px-4 [&_span]:py-2 [&_span]:rounded-full [&_span]:text-base [&_span]:font-medium shadow-[0px_0px_20px_-4px_#dadde8] rounded-xl py-8 px-9 lg:mx-0 mx-4'>
           <span>Per Successful Qnection</span>
           <div className='flex items-center [&_strong]:text-[60px] [&_p]:text-[23px] [&_p]:pl-2 pt-3'>
-            <strong>02</strong>
-            <p>TOKEN</p>
+            <strong>2</strong>
+            <p>TOKENS</p>
           </div>
-          <p className='xl:text-lg font-medium'>MODELING & ENGINEERING</p>
-          <button className='bg-[#52B3CD] text-white text-2xl py-2 px-4 rounded-xl w-full lg:mt-12 mt-6'>
+          <p className='xl:text-lg font-medium lg:mb-14 mb-6'>MODELING & ENGINEERING</p>
+          {/* <button className='bg-[#52B3CD] text-white text-2xl py-2 px-4 rounded-xl w-full lg:mt-12 mt-6'>
             Select
-          </button>
+          </button> */}
 
           <div className='border-t-2 mt-7 '>
             <ul className='tokenPoint [&_li]:xl:text-[15px] [&_li]:lg:text-[12px] text-sm pt-3'>
               <li>Early Issue Detection</li>
               <li>Connection modeling in Tekla</li>
-              <li>Customization and QAQC of detailing</li>
+              <li>Customization and QA/QC of detailing</li>
               <li>Model change management</li>
               <li>Unlimited runs per joint</li>
               <li>Fabricator preferences and aliases</li>
@@ -124,21 +124,21 @@ const TokenComponent = () => {
         <div className='lg:inline hidden lg:col-span-4 col-span-12 [&_span]:text-[#42870A] [&_span]:bg-[#DDFFC2] [&_span]:px-4 [&_span]:py-2 [&_span]:rounded-full [&_span]:text-base [&_span]:font-medium shadow-[0px_0px_20px_-4px_#dadde8] rounded-xl py-8 px-9 lg:mx-0 mx-4'>
           <span>Per Successful Qnection</span>
           <div className='flex items-center [&_strong]:text-[60px] [&_p]:text-[23px] [&_p]:pl-2 pt-3'>
-            <strong>03</strong>
-            <p>TOKEN</p>
+            <strong>3</strong>
+            <p>TOKENS</p>
           </div>
           <p className='xl:text-lg font-medium'>
             MODELING ,ENGINEERING & OPTIMAZATION
           </p>
-          <button className='bg-[#83C44F] text-white text-2xl py-2 px-4 rounded-xl w-full mt-5'>
+          {/* <button className='bg-[#83C44F] text-white text-2xl py-2 px-4 rounded-xl w-full mt-5'>
             Select
-          </button>
+          </button> */}
 
           <div className='border-t-2 mt-7'>
             <ul className='tokenPoint [&_li]:xl:text-[15px] [&_li]:lg:text-[12px] text-sm pt-3'>
               <li>Early Issue Detection</li>
               <li>Connection modeling in Tekla</li>
-              <li>Customization and QAQC of detailing</li>
+              <li>Customization and QA/QC of detailing</li>
               <li>Model change management</li>
               <li>Unlimited runs per joint</li>
               <li>Fabricator preferences and aliases</li>
@@ -157,11 +157,11 @@ const TokenComponent = () => {
         <div className='flex justify-between items-center min-[992px]:flex-row gap-y-3 flex-col border-b-2 pb-4 [&_strong]:text-3xl'>
           <strong>BUY TOKENS</strong>
           <div className='flex gap-x-4 flex-wrap max-md:justify-center [&_p]:font-medium'>
-            <p className='text-[#D05129]'>MODELING: 01 TOKEN</p>
+            <p className='text-[#D05129]'>MODELING: 1 TOKEN</p>
             <p className='text-[#52B3CD] relative buyToken px-1'>
-              ENGINEERING: 02 TOKEN
+              ENGINEERING: 2 TOKENS
             </p>
-            <p className='text-[#83C44F]'>OPTIMIZATION: 03 TOKEN</p>
+            <p className='text-[#83C44F]'>OPTIMIZATION: 3 TOKENS</p>
           </div>
         </div>
         <strong className='text-xl font-normal py-4 block'>
