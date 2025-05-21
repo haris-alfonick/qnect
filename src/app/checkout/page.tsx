@@ -192,12 +192,12 @@ export default function CheckoutPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-12 gap-8">
-          <div className='lg:col-span-7 md:col-span-6 col-span-12 md:order-1 order-2'>
+        <div className="grid grid-cols-12 md:gap-8 max-md:gap-y-5">
+          <div className='lg:col-span-7 md:col-span-6 col-span-12'>
             <CheckoutField ref={formRef} onFormSubmit={handleFormSubmit} />
           </div>
 
-          <div className="lg:col-span-5 md:col-span-6 col-span-12 md:order-2 order-1 space-y-6 border border-[#e5e7eb] py-4 px-5 rounded">
+          <div className="lg:col-span-5 md:col-span-6 col-span-12 space-y-6 border border-[#e5e7eb] py-4 px-5 rounded">
             <h2 className="md:text-2xl text-xl font-semibold">Order Summary</h2>
 
             {items.map((item) => (
