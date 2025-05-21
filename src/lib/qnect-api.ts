@@ -1,4 +1,4 @@
-interface QnectApiResponse {
+export interface QnectApiResponse {
   code: number;
   Msg?: string;
   Info?: Record<string, unknown> | unknown[];
@@ -18,20 +18,22 @@ interface FreeTrialData {
 }
 
 interface RevitPurchaseData {
+  action: string;
   txn_id: string;
-  custom: string;
-  payment_status: 'Completed' | 'Failed';
-  item_number: string;
-  item_name: string;
+  company_id?: number | string;
   quantity: number;
-  payment_gross: number;
   txn_type: 'TRIAL' | 'subscr_payment';
   last_name: string;
   first_name: string;
-  user_name: string;
   buyer_adsk_account: string;
   referer_account?: string;
 }
+
+// interface getCompaniesData {
+//   action: string;
+//   ut: string;
+//   email: string;
+// }
 
 interface Company {
   id: number;
@@ -48,13 +50,15 @@ export async function callQnectApi(
     formData.append(key, value.toString());
   }
 
+  const requestBody = formData.toString();
+
   try {
     const response = await fetch('https://dev1.app.qnect.com/cgi-bin/InitiateDBImport/QnectApi.cgi', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: formData.toString(),
+      body: requestBody,
     });
 
     if (!response.ok) {
@@ -63,10 +67,10 @@ export async function callQnectApi(
 
     const data = await response.json();
     return {
-      code: data.code || 0,
+      code: data.Code || 0,
       Msg: data.Msg,
       Info: data.Info,
-      success: data.code === 1,
+      success: data.Code === 1,
       message: data.Msg,
       data: data.Info
     };
@@ -89,6 +93,7 @@ export async function verifyEmail(email: string, userType: 'REVIT' | 'TEKLA' | '
 
 export async function getCompanies(email: string, userType: 'REVIT' | 'TEKLA'): Promise<QnectApiResponse & { companies?: Company[] }> {
   const response = await callQnectApi('get_company', {
+    action: 'get_company',
     ut: userType,
     email: email
   });
@@ -104,29 +109,32 @@ export async function getCompanies(email: string, userType: 'REVIT' | 'TEKLA'): 
 }
 
 export async function processRevitPurchase(data: RevitPurchaseData): Promise<QnectApiResponse> {
-  return callQnectApi('process_revit', {
+  const payload: Record<string, string | number> = {
+    action: data.action,
     txn_id: data.txn_id,
-    custom: data.custom,
-    payment_status: data.payment_status,
-    item_number: data.item_number,
-    item_name: data.item_name,
     quantity: data.quantity,
-    payment_gross: data.payment_gross,
     txn_type: data.txn_type,
     last_name: data.last_name,
     first_name: data.first_name,
-    user_name: data.user_name,
     buyer_adsk_account: data.buyer_adsk_account,
     referer_account: data.referer_account || ''
-  });
+  };
+
+  // Add company_id to payload only if it exists
+  if (data.company_id !== undefined) {
+    payload.company_id = data.company_id;
+  }
+
+  return callQnectApi('process_revit', payload);
 }
 
-export async function addTokens(userType: 'TEKLA', companyId: number, tokenCount: number, customMessage: string): Promise<QnectApiResponse> {
+export async function addTokens(userType: 'TEKLA', companyId: number, tokenCount: number, customMessage: string, ref: string): Promise<QnectApiResponse> {
   return callQnectApi('add_tokens', {
     ut: userType,
     company: companyId,
     t: tokenCount,
-    custom: customMessage
+    custom: customMessage,
+    ref: ref
   });
 }
 

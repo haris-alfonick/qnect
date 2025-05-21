@@ -10,8 +10,28 @@ import { useRouter } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_StripePublishableKey!);
+
+interface Company {
+  id: number;
+  name: string;
+}
+
+interface CompanyData {
+  companies: Company[];
+  message?: string;
+}
 
 export default function CheckoutPage() {
   const items = useAppSelector(selectCartItems);
@@ -25,6 +45,9 @@ export default function CheckoutPage() {
     message: string;
   }>({ type: null, message: '' });
   const formRef = useRef<CheckoutFormRef>(null);
+  const [showCompanyDialog, setShowCompanyDialog] = useState(false);
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>("");
+  const [getCompanyData, setGetCompanyData] = useState<CompanyData>({ companies: [] });
 
   useEffect(() => {
     if (isInitialized) {
@@ -52,6 +75,67 @@ export default function CheckoutPage() {
     handleCheckout(data);
   };
 
+  const sessionCheckout = async (formData: {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    referEmail?: string;
+    message?: string;
+  }, autodeskToken?: string | null) => {
+    try {
+      setIsProcessing(true);
+      setStatus({ type: null, message: '' });
+
+      // Create Stripe checkout session
+      const response = await fetch('/api/checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: items.map(item => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+          customer: {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            username: formData.username,
+            email: formData.email,
+            referEmail: formData.referEmail,
+            message: formData.message
+          },
+          ...(autodeskToken && { autodesk_token: autodeskToken }),
+          ...(selectedCompanyId && { companyId: selectedCompanyId })
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create checkout session');
+      }
+
+      const { sessionId } = await response.json();
+      const stripe = await stripePromise;
+
+      if (stripe) {
+        await stripe.redirectToCheckout({
+          sessionId,
+        });
+      }
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      setStatus({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'An error occurred during checkout. Please try again.'
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const handleCheckout = async (formData: {
     firstName: string;
     lastName: string;
@@ -60,12 +144,35 @@ export default function CheckoutPage() {
     referEmail?: string;
     message?: string;
   }) => {
-    try {
-      setIsProcessing(true);
-      setStatus({ type: null, message: '' });
+    setIsProcessing(true);
+    setStatus({ type: null, message: '' });
 
-      // If total is 0 (free trial), process directly without Stripe
-      if (total === 0) {
+    try {
+      const hasAutodeskAuth = sessionStorage.getItem('autodesk_auth_state');
+      if (!hasAutodeskAuth) {
+        // Verify email first
+        // const userType = items[0]?.plan === 'Free Trial' ? 'REVIT' : 'QNECT';
+        const verifyResponse = await fetch('/api/verify-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            userType: 'QNECT'
+          }),
+        });
+
+        const verifyData = await verifyResponse.json();
+        if (!verifyData.success) {
+          throw new Error(verifyData.message || 'Email verification failed');
+        }
+      }
+      // Check if it's a free trial
+      const isFreeTrial = items.length === 1 && items[0].plan === 'Free Trial';
+
+      if (isFreeTrial) {
+        // Process free trial directly
         const response = await fetch('/api/free-trial', {
           method: 'POST',
           headers: {
@@ -83,68 +190,62 @@ export default function CheckoutPage() {
           }),
         });
 
-        const data = await response.json();
-
-        if (response.ok) {
-          setStatus({
-            type: 'success',
-            message: 'Free trial activated successfully! You will receive an email with instructions shortly.'
-          });
-          // Redirect to success page after 3 seconds
-          setTimeout(() => {
-            router.push('/success');
-          }, 3000);
-        } else {
-          setStatus({
-            type: 'error',
-            message: data.error || 'Failed to activate free trial. Please try again.'
-          });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to process free trial');
         }
+
+        setStatus({
+          type: 'success',
+          message: 'Free trial activated successfully! You will receive an email with instructions shortly.'
+        });
+        
+        // Redirect to success page after 3 seconds
+        setTimeout(() => {
+          router.push('/success');
+        }, 3000);
         return;
       }
 
-      // For paid items, proceed with Stripe checkout
-      const stripeItems = items.map((item) => ({
-        name: item.name,
-        price: item.price,
-        image: `/images/${item.name === "Revit" ? "revit" : "coin"}.png`,
-        quantity: item.quantity,
-      }));
+      // Check if it's a pro plan or tokens
+      const isProOrTokens = items[0]?.plan === 'pro' || items[0]?.name === 'tokens';
+      let autodeskToken: string | null = null;
+      
+      if (isProOrTokens) {
+        autodeskToken = sessionStorage.getItem('autodesk_auth_state');
+        if (!autodeskToken) {
+          throw new Error('Autodesk authentication required');
+        }
+      }
 
-      const response = await fetch('/api/checkout-session', {
+      const getCompanies = await fetch('/api/companies', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          items: stripeItems,
-          customer: {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            username: formData.username,
-            email: formData.email,
-            referEmail: formData.referEmail,
-            message: formData.message
-          }
+        body: JSON.stringify({
+          action: 'get_company',
+          ut: 'REVIT',
+          email: formData.email,
         }),
       });
-
-      const data = await response.json();
-      const stripe = await stripePromise;
       
-      if (stripe) {
-        await stripe.redirectToCheckout({
-          sessionId: data.sessionId,
-        });
+      const getCompanyData = await getCompanies.json();
+      
+      if (getCompanyData.companies.length > 1) {
+        console.log(getCompanyData.companies)
+        setGetCompanyData({ companies: getCompanyData.companies });
+        setShowCompanyDialog(true);
+      } else {
+        await sessionCheckout(formData, autodeskToken);
       }
+
     } catch (error) {
       console.error('Error during checkout:', error);
       setStatus({
         type: 'error',
-        message: 'An error occurred during checkout. Please try again.'
+        message: error instanceof Error ? error.message : 'An error occurred during checkout. Please try again.'
       });
-    } finally {
-      setIsProcessing(false);
     }
   };
 
@@ -192,12 +293,13 @@ export default function CheckoutPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-12 md:gap-8 max-md:gap-y-5">
-          <div className='lg:col-span-7 md:col-span-6 col-span-12'>
+        <div className="grid grid-cols-12 gap-8">
+          <div className='lg:col-span-7 md:col-span-6 col-span-12 md:order-1 order-2'>
             <CheckoutField ref={formRef} onFormSubmit={handleFormSubmit} />
           </div>
 
-          <div className="lg:col-span-5 md:col-span-6 col-span-12 space-y-6 border border-[#e5e7eb] py-4 px-5 rounded">
+          <div className='lg:col-span-5 md:col-span-6 col-span-12 md:order-2 order-1'>
+            <div className="lg:col-span-5 md:col-span-6 col-span-12 md:order-2 order-1 space-y-6 border border-[#e5e7eb] py-4 px-5 rounded">
             <h2 className="md:text-2xl text-xl font-semibold">Order Summary</h2>
 
             {items.map((item) => (
@@ -235,9 +337,61 @@ export default function CheckoutPage() {
               )}
             </button>
           </div>
+            
+          </div>
         </div>
       </div>
       <Footer />
+      
+      <Dialog open={showCompanyDialog} onOpenChange={() => {
+        setShowCompanyDialog(false);
+      }}>
+        <DialogContent className="bg-white sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Select Company </DialogTitle>
+            <DialogDescription>
+              Please select a company to proceed with the checkout.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <RadioGroup
+              value={selectedCompanyId}
+              onValueChange={setSelectedCompanyId}
+              className="grid gap-4"
+            >
+              {getCompanyData.companies.map((company) => (
+                <div key={company.id} className="flex items-center space-x-2">
+                  <RadioGroupItem value={company.id.toString()} id={`company-${company.id}`} />
+                  <Label htmlFor={`company-${company.id}`}>{company.name}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+          <div className="flex justify-end space-x-2">
+            <Button variant="outline" onClick={() => {
+              setShowCompanyDialog(false);
+              setIsProcessing(false);
+            }}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => {
+                if (selectedCompanyId && formRef.current) {
+                  const formData = formRef.current.getFormData();
+                  if (formData) {
+                    setSelectedCompanyId(selectedCompanyId);
+                    sessionCheckout(formData, sessionStorage.getItem('autodesk_auth_state'));
+                    setShowCompanyDialog(false);
+                  }
+                }
+              }} 
+              disabled={!selectedCompanyId}
+            >
+              Continue
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

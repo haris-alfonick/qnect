@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, forwardRef, useImperativeHandle } from 'react'
+import { useState, forwardRef, useImperativeHandle, useEffect } from 'react'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 // import { useForm } from 'react-hook-form'
@@ -43,6 +43,21 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
     message: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Load user details from sessionStorage if they exist
+  useEffect(() => {
+    const userDetails = sessionStorage.getItem('userDetails');
+    if (userDetails) {
+      const { firstName, lastName, userName, emailId } = JSON.parse(userDetails);
+      setFormData(prev => ({
+        ...prev,
+        firstName: firstName || '',
+        lastName: lastName || '',
+        username: userName || '',
+        email: emailId || ''
+      }));
+    }
+  }, []);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};

@@ -14,6 +14,15 @@ import {
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import { removeFromCart, setCartOpen, updateQuantity } from '@/lib/features/cart/cartSlice'
 import { useRouter } from 'next/navigation'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 // import CheckoutButton from './CheckoutButton'
 
 // LoadStripe
@@ -47,21 +56,87 @@ const NavHeader = () => {
   // }, [])
 
   // const options = {fetchClientSecret}
-function handleCheckout(){
-  
-  dispatch(setCartOpen(false))
-  router.push('/checkout')
-}
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSoftwareDropdownOpen, setIsSoftwareDropdownOpen] = useState(false)
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false)
+  const [showAlertDialog, setShowAlertDialog] = useState(false)
   // const [IsCartOpen, setIsCartOpen] = useState(false)
   const cartItemsData = useAppSelector((state) => state.cart.items)
   const dispatch = useAppDispatch()
   const isCartOpen = useAppSelector((state) => state.cart.isCartOpen)
 
+  function handleCheckout() {
+    // Check if any item is Free Trial or Token
+    const hasSpecialItem = cartItemsData.some(item => item.plan === 'pro' || item.name === 'Token');
+  
+    if (hasSpecialItem) {
+      setShowAlertDialog(true);
+      return;
+    }
+
+    // For non-special items, go directly to checkout
+    dispatch(setCartOpen(false));
+    router.push('/checkout');
+  }
+
+  // const handleProceedToCheckout = () => {
+  //   setShowAlertDialog(false);
+  //   dispatch(setCartOpen(false));
+  //   router.push('/checkout');
+  // };
+
   return (
     <>
+      <Dialog open={showAlertDialog} onOpenChange={setShowAlertDialog}>
+        <DialogContent className="bg-white">
+          <DialogHeader>
+            <DialogTitle>Do you have an Autodesk account?</DialogTitle>
+            <DialogDescription>
+              
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button className='rounded hover:opacity-70' onClick={() => {
+              setShowAlertDialog(false);
+              dispatch(setCartOpen(false));
+              router.push('/checkout');
+            }}>
+              No
+            </Button>
+            <Button className="bg-black hover:bg-black/90 text-white rounded hover:opacity-70" onClick={() => {
+              setShowAlertDialog(false);
+              // Initiate Autodesk OAuth flow
+              const cartItems = cartItemsData.map(item => ({
+                name: item.name,
+                price: item.price,
+                image: `/images/${item.name === "Revit" ? "revit" : "coin"}.png`,
+                quantity: item.quantity,
+              }));
+
+              // Store cart items in session storage for after OAuth
+              sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+              // Initiate Autodesk OAuth flow
+              const authUrl = new URL('https://developer.api.autodesk.com/authentication/v2/authorize');
+              authUrl.searchParams.append('response_type', 'code');
+              authUrl.searchParams.append('client_id', process.env.NEXT_PUBLIC_AUTODESK_CLIENT_ID!);
+              authUrl.searchParams.append('redirect_uri', `https://qnect-zeta.vercel.app/api/auth/callback`);
+              authUrl.searchParams.append('scope', 'data:read');
+              
+              // Generate and store a random state value
+              const state = Math.random().toString(36).substring(7);
+              sessionStorage.setItem('autodesk_auth_state', state);
+              authUrl.searchParams.append('state', state);
+
+              // Redirect to Autodesk OAuth
+              window.location.href = authUrl.toString();
+            }}>
+              Yes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {isCartOpen && (
         <div className='bg-black/75 z-30 h-screen w-full fixed'>
           <div className='px-6 py-4 bg-white fixed right-0 top-0 rounded-lg shadow-lg overflow-y-auto h-full' style={{scrollbarWidth: 'none',}}>
@@ -115,7 +190,8 @@ function handleCheckout(){
                           <option>Basic</option>
                         </select> */}
                       </div>
-                      <div className='flex gap-x-3'>
+                      {item.plan !== 'Free Trial' && item.name !== 'Token' && (
+                        <div className='flex gap-x-3'>
                         <p>Quantity</p>
                         <div className='flex h-[34px] justify-start items-center border rounded [&_button]:px-2 w-fit [&_span]:px-4 [&_button]:text-[#D05129]'>
                           <button onClick={() => dispatch(updateQuantity({ id: item.id, type: 'decrement' }))}>-</button>
@@ -123,6 +199,7 @@ function handleCheckout(){
                           <button onClick={() => dispatch(updateQuantity({ id: item.id, type: 'increment' }))}>+</button>
                         </div>
                       </div>
+                      )}
                     </div>
                     <div className='flex flex-col'>
                       <span className='text-[10px] text-gray-500 text-end'>Total Price</span>
@@ -152,7 +229,7 @@ function handleCheckout(){
                 <span>SUBTOTAL</span>
                 <span>${cartItemsData.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}</span>
               </div>
-              <p className='text-sm'>Tax is calculated at checkout</p>
+              <p className='text-sm'>Tax is calculated at checkout!</p>
               <button onClick={() => handleCheckout()}>Checkout</button>
               {/* <CheckoutButton /> */}
               {/* <button>Checkout</button> */}
@@ -165,40 +242,40 @@ function handleCheckout(){
       )}
       <div className='flex items-center justify-between py-4 sm:px-6 px-4 bg-transparent absolute top-0 z-10 w-full'>
         <Link href="/">
-          <Image
-            src='/images/logo.png'
-            alt='logo'
-            width={125}
-            height={100}
-            className='mr-10'
-          />
+        <Image
+          src='/images/logo.png'
+          alt='logo'
+          width={125}
+          height={100}
+          className='mr-10'
+        />
         </Link>
 
         <nav className='hidden lg:flex mr-auto'>
           <ul className='navMainLi flex space-x-4 lg:text-[13px] xl:text-[15px] [&>li]:text-white [&_ul_li]:text-[#333]'>
           <li className="relative group border-b-2 border-[#85C451]">
-              Software & Services
+                Software & Services
               <FontAwesomeIcon icon={faAngleDown} width={16} height={16} className="pl-2" />
-              
+          
               <div className="absolute left-0 pt-2 w-52  z-30 group-hover:block hidden">
                 <ul className="navMainLi bg-white shadow-lg rounded p-4 space-y-1">
-                  <li>
+                    <li>
                     <Link href="https://www.qnect.com/early-connected-models">Early Connected Models</Link>
-                  </li>
+                    </li>
                   <li className='group/support relative'>
                     <Link href="/">Qnect for Autodesk Revit</Link>
                     <ul className='group-hover/support:block hidden absolute top-0 -right-36 bg-white shadow-lg rounded p-3'>
                       <li><Link href="https://www.qnect.com/qnect-autodesk-revit/support">Customer Support</Link></li>
                     </ul>
-                  </li>
+                    </li>
                   <li className='group/release relative'>
                     <Link href="https://www.qnect.com/quickqnect">QuickQnect</Link>
                     <ul className='group-hover/release:block hidden absolute top-0 -right-28 bg-white shadow-lg rounded p-3'>
                       <li><Link href="https://www.qnect.com/release-notes">Release Notes</Link></li>
                     </ul>
-                  </li>
-                </ul>
-              </div>
+                    </li>
+                  </ul>
+                </div>
             </li>
             <li>
               <Link href='https://www.qnect.com/projects-testimonials'>Projects & Testimonials</Link>
@@ -233,8 +310,11 @@ function handleCheckout(){
                 </div>
             </li>
             <li>
-              <Link href='https://app.qnect.com/sign-in/?hsCtaTracking=918221c6-078a-4946-b0d1-d209a098a820%7Cbdb26f12-aca1-4773-b130-48f4bb268c6b'>Sign In</Link>
+              <Link href="tokens">Tokens</Link>
             </li>
+            {/* <li>
+              <Link href='https://app.qnect.com/sign-in/?hsCtaTracking=918221c6-078a-4946-b0d1-d209a098a820%7Cbdb26f12-aca1-4773-b130-48f4bb268c6b'>Sign In</Link>
+            </li> */}
           </ul>
         </nav>
 
@@ -274,13 +354,13 @@ function handleCheckout(){
         <div className='lg:hidden fixed top-0 left-0 bottom-0 w-full h-full bg-white z-30 overflow-y-auto'>
           <div className='flex justify-between items-center p-3 px-4 border-b'>
             <Link href="/">
-              <Image
-                src='/images/logo.png'
-                alt='logo'
-                width={125}
-                height={100}
-                className='mr-10'
-                />
+            <Image
+              src='/images/logo.png'
+              alt='logo'
+              width={125}
+              height={100}
+              className='mr-10'
+            />
             </Link>
             <button onClick={() => setIsMenuOpen(false)}>
               <FontAwesomeIcon

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
 type CartItem = {
   id: string;
   name: string;
@@ -29,24 +28,11 @@ const cartSlice = createSlice({
       state.initialized = true;
     },
     addToCart(state, action: PayloadAction<CartItem>) {
-      const existingItem = state.items.find(item => item.id === action.payload.id);
-      const hasRevitItem = state.items.some(item => item.name === 'Revit');
+      // Clear existing items before adding new one
+      state.items = [];
       
-      // If trying to add a free trial and there's already a Revit item in cart, don't add it
-      if (action.payload.plan === 'Free Trial' && hasRevitItem) {
-        return;
-      }
-      
-      // If it's a free trial, don't allow adding more than one
-      if (action.payload.plan === 'Free Trial') {
-        if (!existingItem) {
-          state.items.push({ ...action.payload, quantity: 1 });
-        }
-      } else if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        state.items.push({ ...action.payload, quantity: 1 });
-      }
+      // Add the new item with quantity 1
+      state.items.push({ ...action.payload, quantity: 1 });
       
       if (typeof window !== 'undefined') {
         localStorage.setItem('cart', JSON.stringify(state.items));
