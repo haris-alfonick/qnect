@@ -138,7 +138,7 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
           {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
         </div>
       </div>
-      <div>
+      {/* <div>
         <Input
           type='text'
           name='username'
@@ -148,7 +148,7 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
           className={errors.username ? 'border-red-500' : ''}
         />
         {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
-      </div>
+      </div> */}
       <div className='flex sm:flex-row flex-col items-center w-full sm:gap-x-3 max-sm:gap-y-3 [&>div]:w-full'>
         <div>
           <Input

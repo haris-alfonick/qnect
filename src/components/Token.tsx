@@ -39,7 +39,7 @@ const TokenComponent = () => {
           AISC & CISC requirements within minutes, often seconds. It&apos;s super
           easy and helps you stick to schedule... and we know it&apos;s schedule,
           schedule, schedule… When revisions are required, Qnect allows you to
-          re-engineer and model revisions in seconds.1
+          re-engineer and model revisions in seconds.
         </p>
         <ul>
           <li>Set your preferences.</li>
@@ -128,7 +128,7 @@ const TokenComponent = () => {
             <p>TOKEN</p>
           </div>
           <p className='xl:text-lg font-medium'>
-            MODELING ,ENGINEERING & OPTIMAZATION
+            MODELING, ENGINEERING & OPTIMAZATION
           </p>
           <button className='bg-[#83C44F] text-white text-2xl py-2 px-4 rounded-xl w-full mt-5'>
             Select

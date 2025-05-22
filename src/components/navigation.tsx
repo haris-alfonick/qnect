@@ -70,7 +70,33 @@ const NavHeader = () => {
     const hasSpecialItem = cartItemsData.some(item => item.plan === 'pro' || item.name === 'Token');
   
     if (hasSpecialItem) {
-      setShowAlertDialog(true);
+      //setShowAlertDialog(true);
+      //return;
+      // Initiate Autodesk OAuth flow
+      const cartItems = cartItemsData.map(item => ({
+        name: item.name,
+        price: item.price,
+        image: `/images/${item.name === "Revit" ? "revit" : "coin"}.png`,
+        quantity: item.quantity,
+      }));
+
+      // Store cart items in session storage for after OAuth
+      sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+      // Initiate Autodesk OAuth flow
+      const authUrl = new URL('https://developer.api.autodesk.com/authentication/v2/authorize');
+      authUrl.searchParams.append('response_type', 'code');
+      authUrl.searchParams.append('client_id', process.env.NEXT_PUBLIC_AUTODESK_CLIENT_ID!);
+      authUrl.searchParams.append('redirect_uri', `https://qnect-zeta.vercel.app/api/auth/callback`);
+      authUrl.searchParams.append('scope', 'data:read');
+      
+      // Generate and store a random state value
+      const state = Math.random().toString(36).substring(7);
+      sessionStorage.setItem('autodesk_auth_state', state);
+      authUrl.searchParams.append('state', state);
+
+      // Redirect to Autodesk OAuth
+      window.location.href = authUrl.toString();
       return;
     }
 
