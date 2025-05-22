@@ -77,7 +77,7 @@ export default function RevitPage() {
 
         <div className="2xl:col-span-5 lg:col-span-6 col-span-12 max-lg:!mx-0">
           <div className="lg:block grid grid-cols-12 justify-between items-center lg:[&_strong]:px-0 [&_strong]:px-2.5">
-            <strong className="planLabel sm:col-span-9 col-span-8 !text-black bg-[#B7B7B7] lg:!text-center !text-start">Feautres</strong>
+            <strong className="planLabel sm:col-span-9 col-span-8 !text-black bg-[#B7B7B7] lg:!text-center !text-start">Features</strong>
             <strong className="planLabel sm:col-span-3 col-span-4 lg:!hidden inline !text-black bg-[#B7B7B7] lg:!text-center max-sm:!text-center">Free Trial</strong>
           </div>
             <ul className="list-none list-inside [&_strong]:text-xl lg:[&_strong]:inline [&_strong]:block lg:[&_strong]:px-0 [&_strong]:px-2 lg:[&_li]:block [&_li]:grid [&_li]:items-center [&_li]:grid-cols-12 sm:[&_li_span]:col-span-10 [&_li_span]:col-span-9 sm:[&_li_.iconPlanText]:col-span-2 [&_li_.iconPlanText]:col-span-3 [&_li_.iconPlanText]:text-center [&_li]:gap-x-1.5 lg:[&_li]:px-0 [&_li]:px-2 lg:[&_li_.iconPlanText]:hidden [&_li_.iconPlanText]:inline-block [&_li>.iconPlanText]:border-r-0 [&_li>span]:border-r lg:[&_li]:border-b-0 [&_li]:border-b lg:[&>strong]:border-b-0 [&>strong]:border-b lg:[&>strong]:py-0 [&>strong]:py-1.5 lg:[&_li>span]:py-0 [&_li>span]:py-1.5">
@@ -112,7 +112,7 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li className="xl:mt-[calc(100%_-_126px)] lg:mt-8 mt-4"><FontAwesomeIcon icon={faCircleXmark} /></li>
+            <li className="2xl:mt-6 lg:mt-8 mt-4"><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li className="lg:mt-6"><strong>$0</strong></li>
@@ -132,7 +132,7 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li className="xl:mt-[calc(100%_-_126px)] mt-8"><FontAwesomeIcon icon={faCircleXmark} /></li>
+            <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li className="lg:mt-6"><strong>$950</strong></li>
@@ -151,7 +151,7 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
-            <li className="xl:mt-[calc(100%_-_126px)] mt-8"><FontAwesomeIcon icon={faCircleCheck} /></li>
+            <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li className="lg:mt-6"><strong>$1900</strong></li>
