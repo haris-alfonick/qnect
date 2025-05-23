@@ -161,7 +161,7 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
           />
           {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
         </div>
-        <div>
+        {/* <div>
           <Input
             type='email'
             name='referEmail'
@@ -171,7 +171,7 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
             className={errors.referEmail ? 'border-red-500' : ''}
           />
           {errors.referEmail && <p className="text-red-500 text-sm mt-1">{errors.referEmail}</p>}
-        </div>
+        </div> */}
       </div>
       <div>
         <Textarea
