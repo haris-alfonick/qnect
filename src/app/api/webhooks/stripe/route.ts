@@ -30,11 +30,18 @@ export async function POST(req: Request) {
     let event: Stripe.Event;
 
     try {
-      // Use the raw body text for signature verification
-      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+      // Parse the raw body to ensure it's properly formatted
+      const body = JSON.parse(rawBody);
+      const formattedBody = JSON.stringify(body, null, 2);
+      
+      // Use the formatted body for signature verification
+      event = stripe.webhooks.constructEvent(formattedBody, signature, webhookSecret);
       console.log('Webhook event constructed successfully:', event.type);
     } catch (err) {
       console.error('Webhook signature verification failed:', err);
+      if (err instanceof SyntaxError) {
+        console.error('Failed to parse webhook body:', rawBody);
+      }
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
