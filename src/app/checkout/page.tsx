@@ -67,7 +67,6 @@ export default function CheckoutPage() {
   const handleFormSubmit = (data: {
     firstName: string;
     lastName: string;
-    username: string;
     email: string;
     referEmail?: string;
     message?: string;
@@ -78,7 +77,6 @@ export default function CheckoutPage() {
   const sessionCheckout = async (formData: {
     firstName: string;
     lastName: string;
-    username: string;
     email: string;
     referEmail?: string;
     message?: string;
@@ -102,7 +100,6 @@ export default function CheckoutPage() {
           customer: {
             firstName: formData.firstName,
             lastName: formData.lastName,
-            username: formData.username,
             email: formData.email,
             referEmail: formData.referEmail,
             message: formData.message
@@ -139,7 +136,6 @@ export default function CheckoutPage() {
   const handleCheckout = async (formData: {
     firstName: string;
     lastName: string;
-    username: string;
     email: string;
     referEmail?: string;
     message?: string;
@@ -151,7 +147,6 @@ export default function CheckoutPage() {
       const hasAutodeskAuth = sessionStorage.getItem('autodesk_auth_state');
       if (!hasAutodeskAuth) {
         // Verify email first
-        // const userType = items[0]?.plan === 'Free Trial' ? 'REVIT' : 'QNECT';
         const verifyResponse = await fetch('/api/verify-email', {
           method: 'POST',
           headers: {
@@ -165,11 +160,14 @@ export default function CheckoutPage() {
 
         const verifyData = await verifyResponse.json();
         if (!verifyData.success) {
+          setIsProcessing(false);
           throw new Error(verifyData.message || 'Email verification failed');
         }
       }
+
       // Check if it's a free trial
-      const isFreeTrial = items.length === 1 && items[0].plan === 'Free Trial';
+      const isFreeTrial = items.length === 1 && items[0]?.name === 'Revit' && items[0]?.plan === 'Free Trial';
+      console.log('isFreeTrial:', isFreeTrial, 'items:', items);
 
       if (isFreeTrial) {
         // Process free trial directly
@@ -182,7 +180,6 @@ export default function CheckoutPage() {
             customer: {
               firstName: formData.firstName,
               lastName: formData.lastName,
-              username: formData.username,
               email: formData.email,
               referEmail: formData.referEmail,
               message: formData.message
@@ -192,6 +189,7 @@ export default function CheckoutPage() {
 
         if (!response.ok) {
           const errorData = await response.json();
+          setIsProcessing(false);
           throw new Error(errorData.error || 'Failed to process free trial');
         }
 
@@ -246,16 +244,46 @@ export default function CheckoutPage() {
         type: 'error',
         message: error instanceof Error ? error.message : 'An error occurred during checkout. Please try again.'
       });
+      setIsProcessing(false);
     }
   };
 
   const handleProceedToCheckout = () => {
+    console.log('Proceeding to checkout...');
     if (formRef.current) {
       const isValid = formRef.current.validateForm();
+      console.log('Form validation result:', isValid);
+      
       if (isValid) {
         const formData = formRef.current.getFormData();
-        handleCheckout(formData);
+        console.log('Form data:', formData);
+        
+        // Check if it's a free trial
+        const isFreeTrial = items.length === 1 && items[0]?.name === 'Revit' && items[0]?.plan === 'Free Trial';
+        console.log('Is free trial:', isFreeTrial);
+        
+        if (isFreeTrial) {
+          console.log('Processing free trial...');
+          handleCheckout(formData);
+        } else {
+          console.log('Processing regular checkout...');
+          handleCheckout(formData);
+        }
+      } else {
+        console.log('Form validation failed');
+        setStatus({
+          type: 'error',
+          message: 'Please fill in all required fields correctly.'
+        });
+        setIsProcessing(false);
       }
+    } else {
+      console.log('Form reference not found');
+      setStatus({
+        type: 'error',
+        message: 'Form reference not found. Please try again.'
+      });
+      setIsProcessing(false);
     }
   };
 

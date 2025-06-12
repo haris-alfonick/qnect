@@ -14,7 +14,6 @@ interface CheckoutFormProps {
   onFormSubmit: (formData: {
     firstName: string;
     lastName: string;
-    username: string;
     email: string;
     referEmail?: string;
     message?: string;
@@ -26,7 +25,6 @@ export interface CheckoutFormRef {
   getFormData: () => {
     firstName: string;
     lastName: string;
-    username: string;
     email: string;
     referEmail?: string;
     message?: string;
@@ -37,7 +35,6 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    username: '',
     email: '',
     referEmail: '',
     message: ''
@@ -48,12 +45,11 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
   useEffect(() => {
     const userDetails = sessionStorage.getItem('userDetails');
     if (userDetails) {
-      const { firstName, lastName, userName, emailId } = JSON.parse(userDetails);
+      const { firstName, lastName, emailId } = JSON.parse(userDetails);
       setFormData(prev => ({
         ...prev,
         firstName: firstName || '',
         lastName: lastName || '',
-        username: userName || '',
         email: emailId || ''
       }));
     }
@@ -68,9 +64,9 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
     if (!formData.lastName.trim()) {
       newErrors.lastName = 'Last name is required';
     }
-    if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
-    }
+    // if (!formData.username.trim()) {
+    //   newErrors.username = 'Username is required';
+    // }
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {

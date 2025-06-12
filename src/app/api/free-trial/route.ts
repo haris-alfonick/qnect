@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const { customer } = await req.json();
 
     // Validate required fields
-    if (!customer.firstName || !customer.lastName || !customer.username || !customer.email) {
+    if (!customer.firstName || !customer.lastName || !customer.email) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }

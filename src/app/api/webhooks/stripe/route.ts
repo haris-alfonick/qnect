@@ -13,14 +13,19 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function POST(req: Request) {
   try {
+    console.log('Webhook received');
     const body = await req.text();
     const headersList = await headers();
     const signature = headersList.get('stripe-signature') as string;
+
+    console.log('Webhook signature:', signature ? 'Present' : 'Missing');
+    console.log('Webhook headers:', Object.fromEntries(headersList.entries()));
 
     let event: Stripe.Event;
 
     try {
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+      console.log('Webhook event constructed successfully:', event.type);
     } catch (err) {
       console.error('Webhook signature verification failed:', err);
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
@@ -29,22 +34,31 @@ export async function POST(req: Request) {
     // Handle the event
     switch (event.type) {
       case 'checkout.session.completed': {
+        console.log('Processing checkout.session.completed event');
         const session = event.data.object as Stripe.Checkout.Session;
         
         // Get customer details from session metadata
         const customerEmail = session.customer_details?.email;
         const customerName = session.customer_details?.name;
-        // const autodeskToken = session.metadata?.autodesk_token;
+        
+        console.log('Customer details:', {
+          email: customerEmail,
+          name: customerName,
+          companyId: session.metadata?.company_id
+        });
         
         // Get line items from the session
         const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+        console.log('Line items:', lineItems.data);
         
         // Process the purchase
         if (lineItems.data.length > 0) {
           const item = lineItems.data[0];
           const productName = item.description?.toLowerCase();
+          console.log('Processing product:', productName);
 
           if (productName === 'revit') {
+            console.log('Processing Revit purchase');
             // Process Revit purchase
             const purchaseData = {
               action: 'revit_license',
@@ -58,24 +72,33 @@ export async function POST(req: Request) {
               referer_account: session.metadata?.referEmail || ''
             };
             
+            console.log('Revit purchase data:', purchaseData);
             const purchaseResponse = await processRevitPurchase(purchaseData);
+            console.log('Revit purchase response:', purchaseResponse);
             
             if (purchaseResponse.code !== 1) {
               console.error('Failed to process Revit purchase:', purchaseResponse.message);
-              // You might want to implement retry logic here
             }
           } else if (productName === 'token') {
+            console.log('Processing Token purchase');
             // Process Token purchase
             const companyId = parseInt(session.metadata?.company_id || '0', 10);
             const tokenCount = item.quantity || 1;
             const customMessage = `Purchase of ${tokenCount} tokens`;
-            const ref = `TOKEN-${session.id}`; // Unique reference using session ID
+            const ref = `TOKEN-${session.id}`;
+            
+            console.log('Token purchase data:', {
+              companyId,
+              tokenCount,
+              customMessage,
+              ref
+            });
             
             const tokenResponse = await addTokens('TEKLA', companyId, tokenCount, customMessage, ref);
+            console.log('Token purchase response:', tokenResponse);
             
             if (tokenResponse.code !== 1) {
               console.error('Failed to process Token purchase:', tokenResponse.message);
-              // You might want to implement retry logic here
             }
           } else {
             console.error('Unknown product type:', productName);
