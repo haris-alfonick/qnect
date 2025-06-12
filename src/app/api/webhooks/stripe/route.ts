@@ -14,17 +14,24 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 export async function POST(req: Request) {
   try {
     console.log('Webhook received');
-    const body = await req.text();
-    const headersList = await headers();
-    const signature = headersList.get('stripe-signature') as string;
+    
+    // Get the raw body as text
+    const rawBody = await req.text();
+    const signature = req.headers.get('stripe-signature');
 
     console.log('Webhook signature:', signature ? 'Present' : 'Missing');
-    console.log('Webhook headers:', Object.fromEntries(headersList.entries()));
+    console.log('Request headers:', Object.fromEntries(req.headers.entries()));
+
+    if (!signature) {
+      console.error('No Stripe signature found in request headers');
+      return NextResponse.json({ error: 'No signature found' }, { status: 400 });
+    }
 
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+      // Use the raw body text for signature verification
+      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
       console.log('Webhook event constructed successfully:', event.type);
     } catch (err) {
       console.error('Webhook signature verification failed:', err);
@@ -107,7 +114,16 @@ export async function POST(req: Request) {
         
         break;
       }
-      // Add other event types as needed
+      case 'payment_intent.succeeded': {
+        console.log('Processing payment_intent.succeeded event');
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        console.log('Payment Intent:', {
+          id: paymentIntent.id,
+          amount: paymentIntent.amount,
+          status: paymentIntent.status
+        });
+        break;
+      }
       default:
         console.log(`Unhandled event type: ${event.type}`);
     }
