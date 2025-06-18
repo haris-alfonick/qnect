@@ -15,6 +15,9 @@ export async function POST(req: Request) {
     const rawBody = await req.text(); // Get raw body as text
     const signature = req.headers.get('stripe-signature');
 
+    console.log('Raw body length:', rawBody.length);
+    console.log('Signature present:', !!signature);
+
     if (!signature) {
       console.error('No Stripe signature found in request headers');
       return NextResponse.json({ error: 'No signature found' }, { status: 400 });
@@ -23,15 +26,16 @@ export async function POST(req: Request) {
     let event: Stripe.Event;
 
     try {
-      // ✅ Important: Stripe requires raw buffer of the body
+      // Use the raw body string directly for signature verification
       event = stripe.webhooks.constructEvent(
-        Buffer.from(rawBody),
+        rawBody,
         signature,
         webhookSecret
       );
       console.log('Webhook event constructed successfully:', event.type);
     } catch (err) {
       console.error('Webhook signature verification failed:', err);
+      console.error('Raw body preview:', rawBody.substring(0, 200) + '...');
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
