@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
     console.log('Request body:', body);
     
     const { items, customer, company_id } = body;
+    console.log('Customer:', customer);
 
     if (!items || !customer) {
       console.error('Missing required fields:', { items, customer });

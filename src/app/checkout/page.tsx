@@ -37,6 +37,7 @@ export default function CheckoutPage() {
   const items = useAppSelector(selectCartItems);
   const total = useAppSelector(selectCartTotal);
   const isInitialized = useAppSelector(selectCartInitialized);
+  const referEmail = useAppSelector((state) => state.checkout.referrerEmail);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -101,7 +102,7 @@ export default function CheckoutPage() {
             firstName: formData.firstName,
             lastName: formData.lastName,
             email: formData.email,
-            referEmail: formData.referEmail,
+            referEmail: referEmail || undefined,
             message: formData.message
           },
           ...(autodeskToken && { autodesk_token: autodeskToken }),

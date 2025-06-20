@@ -128,8 +128,15 @@ export async function processRevitPurchase(data: RevitPurchaseData): Promise<Qne
   return callQnectApi('process_revit', payload);
 }
 
-export async function addTokens(userType: 'TEKLA', companyId: number, tokenCount: number, customMessage: string, ref: string): Promise<QnectApiResponse> {
+export async function addTokens(
+  userType: 'TEKLA',
+  companyId: number,
+  tokenCount: number,
+  customMessage: string,
+  ref: string
+): Promise<QnectApiResponse> {
   return callQnectApi('add_tokens', {
+    action: 'add_tokens', // ✅ add this line
     ut: userType,
     company: companyId,
     t: tokenCount,

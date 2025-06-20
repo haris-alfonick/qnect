@@ -23,6 +23,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { setReferrerEmail } from '@/lib/features/checkout/checkoutSlice'
 // import CheckoutButton from './CheckoutButton'
 
 // LoadStripe
@@ -64,6 +65,7 @@ const NavHeader = () => {
   const cartItemsData = useAppSelector((state) => state.cart.items)
   const dispatch = useAppDispatch()
   const isCartOpen = useAppSelector((state) => state.cart.isCartOpen)
+  const referrerEmail = useAppSelector((state) => state.checkout.referrerEmail)
 
   function handleCheckout() {
     // Check if any item is Free Trial or Token
@@ -246,8 +248,10 @@ const NavHeader = () => {
               <strong>Referrer Email</strong>
               <input
                 type='email'
+                value={referrerEmail}
                 placeholder='Enter Email Address'
                 className='w-full border px-2 py-1 rounded-lg mt-2'
+                onChange={e => dispatch(setReferrerEmail(e.target.value))}
               />
               <p>Your friend show/told you account Qnect so we can send them a small thank you.</p>
             </div>
