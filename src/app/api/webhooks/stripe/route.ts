@@ -51,7 +51,7 @@ export async function POST(req: Request) {
         );
         console.log('Webhook event constructed successfully with formatted body:', event.type);
       } catch (formatError) {
-        console.log('Formatted body failed, trying original body...');
+        console.log('Formatted body failed, trying original body...', formatError);
         // If formatted body fails, try with the original raw body
         event = stripe.webhooks.constructEvent(
           rawBody,
