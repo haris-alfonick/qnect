@@ -52,7 +52,7 @@ export default function RevitPage() {
       </div>
 
       <div className="mt-16 text-center [&_h2]:text-3xl [&_h2]:font-bold [&_p]:text-[#666666] [&_p]:mt-2 [&_button]:text-white [&_button]:py-2 [&_button]:px-4 [&_button]:rounded-sm [&_button]:text-md [&_button]:w-auto [&_button]:bg-[#CF5127] [&_button]:mt-4">
-          <h2>FREE 30-day Trial</h2>
+          <h2>FREE 14-days Trial</h2>
           <p>Visit the <strong>Autodesk App</strong> Store to download!</p>
           <Link href="https://apps.autodesk.com/RVT/en/Detail/Index?id=455692108544260402&appLang=en&os=Win64"><button>Visit The App Store</button></Link>
       </div>

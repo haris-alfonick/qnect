@@ -67,7 +67,7 @@ const TokenComponent = () => {
         </div>
       </div>
 
-      <div className='grid grid-cols-12 max-w-7xl mx-auto lg:gap-x-6 mt-8 sm:px-6 px-0 [&_.tokenPoint>li]:pl-8 [&_.tokenPoint>li]:bg-[url(/images/check-icon.png)] [&_.tokenPoint>li]:bg-[left_center] [&_.tokenPoint>li]:bg-no-repeat [&_.tokenPoint>li]:bg-[length:20px_21px] [&_.tokenPoint>li]:leading-7 [&_.tokenPoint>li]:mt-3 [&_.tokenPoint>li]:text-[#333] [&_.ListEndText]:text-lg [&_.ListEndText]:font-medium [&_.ListEndText]:mt-5'>
+      <div className='grid grid-cols-12 max-w-7xl mx-auto lg:gap-x-6 mt-8 sm:px-6 px-0 [&_.tokenPoint>li]:pl-8 [&_.tokenPoint>li]:bg-[url(/images/check-icon.png)] [&_.tokenPoint>li]:bg-[left_center] [&_.tokenPoint>li]:bg-no-repeat [&_.tokenPoint>li]:bg-[length:20px_21px] [&_.tokenPoint>li]:leading-7 [&_.tokenPoint>li]:mt-3 [&_.tokenPoint>li]:text-[#333] [&_.ListEndText]:text-lg [&_.ListEndText]:font-medium [&_.ListEndText]:mt-5 [&>div]:relative [&_.ListEndText]:absolute [&_.ListEndText]:bottom-8'>
 
         <div className='lg:col-span-4 col-span-12 [&_span]:text-[#D05129] [&_span]:bg-[#FFBEAA] [&_span]:px-4 [&_span]:py-2 [&_span]:rounded-full [&_span]:text-base [&_span]:font-medium shadow-[0px_0px_20px_-4px_#dadde8] rounded-xl py-8 px-9 lg:mx-0 mx-4'>
           <span>Per Successful Qnection</span>
@@ -80,9 +80,9 @@ const TokenComponent = () => {
             Select
           </button> */}
 
-          <div className='border-t-2 mt-7'>
+          <div className='border-t-2 mt-7 mb-24'>
             <ul className='tokenPoint [&_li]:xl:text-[15px] [&_li]:lg:text-[12px] text-sm pt-3'>
-              <li>Early Issue Detection</li>
+              <li>Early issue detection</li>
               <li>Connection modeling in Tekla</li>
               <li>Customization and QA/QC of detailing</li>
               <li>Model change management</li>
@@ -105,14 +105,15 @@ const TokenComponent = () => {
             Select
           </button> */}
 
-          <div className='border-t-2 mt-7 '>
+          <div className='border-t-2 mt-7 mb-24'>
             <ul className='tokenPoint [&_li]:xl:text-[15px] [&_li]:lg:text-[12px] text-sm pt-3'>
-              <li>Early Issue Detection</li>
+              <li>Early issue detection</li>
               <li>Connection modeling in Tekla</li>
               <li>Customization and QA/QC of detailing</li>
               <li>Model change management</li>
               <li>Unlimited runs per joint</li>
               <li>Fabricator preferences and aliases</li>
+              <li>Connection design calculations</li>
             </ul>
           </div>
 
@@ -134,14 +135,18 @@ const TokenComponent = () => {
             Select
           </button> */}
 
-          <div className='border-t-2 mt-7'>
+          <div className='border-t-2 mt-7 mb-24'>
             <ul className='tokenPoint [&_li]:xl:text-[15px] [&_li]:lg:text-[12px] text-sm pt-3'>
-              <li>Early Issue Detection</li>
+              <li>Early issue detection</li>
               <li>Connection modeling in Tekla</li>
               <li>Customization and QA/QC of detailing</li>
               <li>Model change management</li>
               <li>Unlimited runs per joint</li>
               <li>Fabricator preferences and aliases</li>
+              <li>Connection design calculations</li>
+              <li>Connection type optimization</li>
+              <li>Bolt optimization</li>
+              <li>Doubler optimization</li>
             </ul>
           </div>
 
