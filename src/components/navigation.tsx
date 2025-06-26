@@ -253,7 +253,7 @@ const NavHeader = () => {
                 className='w-full border px-2 py-1 rounded-lg mt-2'
                 onChange={e => dispatch(setReferrerEmail(e.target.value))}
               />
-              <p>Your friend show/told you account Qnect so we can send them a small thank you.</p>
+              <p>Your friend introduced you to Qnect, so we&apos;d love to send them a small thank-you gift!</p>
             </div>
             <div className='flex flex-col mt-4 [&_p]:text-gray-500 [&_button]:bg-black [&_button]:text-white [&_button]:rounded [&_button]:py-2 [&_button]:mt-4'>
               <div className='flex flex-row items-center justify-between font-semibold'>
