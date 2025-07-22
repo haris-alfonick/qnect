@@ -78,12 +78,6 @@ export async function POST(req: Request) {
         const customerEmail = session.customer_details?.email;
         const customerName = session.customer_details?.name;
 
-        console.log('Customer details:', {
-          email: customerEmail,
-          name: customerName,
-          companyId: session.metadata?.company_id
-        });
-
         const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
         console.log('Line items:', lineItems.data);
 

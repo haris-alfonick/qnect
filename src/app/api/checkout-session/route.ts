@@ -3,6 +3,7 @@ import Stripe from "stripe";
 
 interface CartItem {
   name: string;
+  plan: string;
   price: number;
   quantity: number;
 }
@@ -43,6 +44,7 @@ export async function POST(req: NextRequest) {
           currency: "usd",
           product_data: {
             name: item.name,
+            plan: item.plan
           },
           unit_amount: item.price * 100,
         },
