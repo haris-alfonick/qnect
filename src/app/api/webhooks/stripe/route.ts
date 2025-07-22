@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { processRevitPurchase, addTokens } from '@/lib/qnect-api';
 import { headers } from 'next/headers';
+import { sendMailToAdmin } from '@/lib/mail';
 
 const stripe = new Stripe(process.env.StripeSecretKey!, {
   apiVersion: '2025-02-24.acacia',
@@ -107,9 +108,11 @@ export async function POST(req: Request) {
             console.log('Revit purchase response:', purchaseResponse);
 
             if (purchaseResponse.code !== 1) {
-              console.error('Failed to process Revit purchase:', purchaseResponse.message);
+              const msg = `❌ Failed to process Revit purchase\nSession ID: ${session.id}\nCustomer: ${customerEmail}\nReason: ${purchaseResponse.message}`;
+              await sendMailToAdmin('Revit Purchase Failed', msg);
+              console.error(msg);
             }
-          } else if (productName === 'token') {
+          } else if (productName === 'Token') {
             const companyId = parseInt(session.metadata?.company_id || '1', 10);
             const tokenCount = item.quantity || 1;
             const customMessage = `Purchase of ${tokenCount} tokens`;
@@ -119,10 +122,14 @@ export async function POST(req: Request) {
             console.log('Token purchase response:', tokenResponse);
 
             if (tokenResponse.code !== 1) {
-              console.error('Failed to process Token purchase:', tokenResponse.message);
+              const msg = `❌ Failed to process Token purchase\nCompany ID: ${companyId}\nCustomer: ${customerEmail}\nQuantity: ${tokenCount}\nReason: ${tokenResponse.message}`;
+              await sendMailToAdmin('Token Purchase Failed', msg);
+              console.error(msg);
             }
           } else {
-            console.error('Unknown product type:', productName);
+            const msg = `❌ Unknown product type in Stripe line item\nSession ID: ${session.id}\nProduct Name: ${productName}\nLine Item: ${JSON.stringify(item, null, 2)}`;
+            await sendMailToAdmin('Unknown Product in Stripe Webhook', msg);
+            console.error(msg);
           }
         }
 
@@ -144,8 +151,11 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ received: true });
-  } catch (error) {
-    console.error('Webhook handler error:', error);
+  } catch (error: unknown) {
+    const err = error as Error;
+    const errorMessage = `❌ Webhook Handler Crashed\nError: ${err.stack || err.message || String(err)}`;
+    await sendMailToAdmin('Webhook Handler Error', errorMessage);
+    console.error(errorMessage);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

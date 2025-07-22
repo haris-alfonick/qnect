@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
+    console.log(items)
     // Create a reference ID for the Autodesk token
     const tokenReference = `token_${Date.now()}`;
 

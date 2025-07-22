@@ -10,28 +10,8 @@ import { useRouter } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_StripePublishableKey!);
-
-interface Company {
-  id: number;
-  name: string;
-}
-
-interface CompanyData {
-  companies: Company[];
-  message?: string;
-}
 
 export default function CheckoutPage() {
   const items = useAppSelector(selectCartItems);
@@ -46,9 +26,6 @@ export default function CheckoutPage() {
     message: string;
   }>({ type: null, message: '' });
   const formRef = useRef<CheckoutFormRef>(null);
-  const [showCompanyDialog, setShowCompanyDialog] = useState(false);
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string>("");
-  const [getCompanyData, setGetCompanyData] = useState<CompanyData>({ companies: [] });
 
   useEffect(() => {
     if (isInitialized) {
@@ -95,6 +72,7 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           items: items.map(item => ({
             name: item.name,
+            plan: item.plan,
             price: item.price,
             quantity: item.quantity,
           })),
@@ -105,8 +83,7 @@ export default function CheckoutPage() {
             referEmail: referEmail || undefined,
             message: formData.message
           },
-          ...(autodeskToken && { autodesk_token: autodeskToken }),
-          ...(selectedCompanyId && { companyId: selectedCompanyId })
+          ...(autodeskToken && { autodesk_token: autodeskToken })
         }),
       });
 
@@ -216,28 +193,28 @@ export default function CheckoutPage() {
           throw new Error('Autodesk authentication required');
         }
       }
-
-      const getCompanies = await fetch('/api/companies', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'get_company',
-          ut: 'REVIT',
-          email: formData.email,
-        }),
-      });
+      await sessionCheckout(formData, autodeskToken);
+      // const getCompanies = await fetch('/api/companies', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     action: 'get_company',
+      //     ut: 'REVIT',
+      //     email: formData.email,
+      //   }),
+      // });
       
-      const getCompanyData = await getCompanies.json();
+      // const getCompanyData = await getCompanies.json();
       
-      if (getCompanyData.companies.length > 1) {
-        console.log(getCompanyData.companies)
-        setGetCompanyData({ companies: getCompanyData.companies });
-        setShowCompanyDialog(true);
-      } else {
-        await sessionCheckout(formData, autodeskToken);
-      }
+      // if (getCompanyData.companies.length > 1) {
+      //   console.log(getCompanyData.companies)
+      //   setGetCompanyData({ companies: getCompanyData.companies });
+      //   setShowCompanyDialog(true);
+      // } else {
+      //   await sessionCheckout(formData, autodeskToken);
+      // }
 
     } catch (error) {
       console.error('Error during checkout:', error);
@@ -371,56 +348,6 @@ export default function CheckoutPage() {
         </div>
       </div>
       <Footer />
-      
-      <Dialog open={showCompanyDialog} onOpenChange={() => {
-        setShowCompanyDialog(false);
-      }}>
-        <DialogContent className="bg-white sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Select Company </DialogTitle>
-            <DialogDescription>
-              Please select a company to proceed with the checkout.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <RadioGroup
-              value={selectedCompanyId}
-              onValueChange={setSelectedCompanyId}
-              className="grid gap-4"
-            >
-              {getCompanyData.companies.map((company) => (
-                <div key={company.id} className="flex items-center space-x-2">
-                  <RadioGroupItem value={company.id.toString()} id={`company-${company.id}`} />
-                  <Label htmlFor={`company-${company.id}`}>{company.name}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
-          <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => {
-              setShowCompanyDialog(false);
-              setIsProcessing(false);
-            }}>
-              Cancel
-            </Button>
-            <Button 
-              onClick={() => {
-                if (selectedCompanyId && formRef.current) {
-                  const formData = formRef.current.getFormData();
-                  if (formData) {
-                    setSelectedCompanyId(selectedCompanyId);
-                    sessionCheckout(formData, sessionStorage.getItem('autodesk_auth_state'));
-                    setShowCompanyDialog(false);
-                  }
-                }
-              }} 
-              disabled={!selectedCompanyId}
-            >
-              Continue
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

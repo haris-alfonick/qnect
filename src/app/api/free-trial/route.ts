@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { processRevitPurchase } from '@/lib/qnect-api';
+import { sendMailToAdmin } from '@/lib/mail'; // helper to send email
 
 export async function POST(req: Request) {
   try {
     const { customer } = await req.json();
 
-    // Validate required fields
     if (!customer.firstName || !customer.lastName || !customer.email) {
       return NextResponse.json(
         { error: 'Missing required fields' },
@@ -13,7 +13,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Process the free trial with transaction data
     const purchaseData = {
       action: 'revit_license',
       txn_id: `TRIAL-${Date.now()}`,
@@ -23,33 +22,41 @@ export async function POST(req: Request) {
       last_name: customer.lastName,
       first_name: customer.firstName,
       buyer_adsk_account: customer.email,
-      referer_account: customer.referEmail
-
-      //custom: 'Free Trial',
-      //payment_status: 'Completed' as const,
-      //item_number: 'REVIT-TRIAL',
-      //item_name: 'Qnect for Autodesk Revit',
-      //payment_gross: 0.00,
-      //user_name: customer.username,
+      referer_account: customer.referEmail,
     };
-    console.log('purchaseData', purchaseData);
+
     const purchaseResponse = await processRevitPurchase(purchaseData);
+
     if (purchaseResponse.code !== 1) {
+      await sendMailToAdmin(
+        'Revit Trial Purchase Failed',
+        `Failed to process trial:\n\nCustomer: ${JSON.stringify(customer, null, 2)}\n\nResponse: ${JSON.stringify(purchaseResponse, null, 2)}`
+      );
+
       return NextResponse.json(
-        { error: purchaseResponse.message || 'Failed to process free trial' },
+        { error: 'Something went wrong. Our team has been notified and will contact you shortly.' },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
       message: 'Free trial activated successfully'
     });
-  } catch (error) {
-    console.error('Error processing free trial:', error);
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error
+        ? error.stack || error.message
+        : String(error);
+  
+    await sendMailToAdmin(
+      'Revit Trial API Error',
+      `Unexpected error during trial processing:\n\n${errorMessage}`
+    );
+  
     return NextResponse.json(
-      { error: 'An error occurred while processing your request' },
+      { error: 'Something went wrong. Our team has been notified and will contact you shortly.' },
       { status: 500 }
     );
   }
-} 
+}
