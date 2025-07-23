@@ -22,7 +22,7 @@ interface RevitPurchaseData {
   txn_id: string;
   company_id?: number | string;
   quantity: number;
-  txn_type: 'TRIAL' | 'subscr_payment';
+  txn_type: 'TRIAL' | 'subscr_payment_express' | 'subscr_payment_pro';
   last_name: string;
   first_name: string;
   buyer_adsk_account: string;

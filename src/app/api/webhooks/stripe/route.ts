@@ -85,13 +85,14 @@ export async function POST(req: Request) {
           const item = lineItems.data[0];
           const productName = item.description?.toLowerCase();
 
-          if (productName === 'revit') {
+          if (productName === 'express' || productName === 'pro') {
+            const txnType = `subscr_payment_${productName}` as const;
             const purchaseData = {
               action: 'revit_license',
               txn_id: session.id,
               company_id: session.metadata?.company_id || '',
               quantity: item.quantity || 1,
-              txn_type: 'subscr_payment' as const,
+              txn_type: txnType,
               last_name: customerName?.split(' ').slice(1).join(' ') || '',
               first_name: customerName?.split(' ')[0] || '',
               buyer_adsk_account: customerEmail || '',
