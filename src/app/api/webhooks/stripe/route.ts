@@ -107,7 +107,7 @@ export async function POST(req: Request) {
               await sendMailToAdmin('Revit Purchase Failed', msg);
               console.error(msg);
             }
-          } else if (productName === '1000 Tokens' || productName === '5000 Tokens' || productName === '15000 Tokens') {
+          } else if (productName === '1000 tokens' || productName === '5000 tokens' || productName === '15000 tokens') {
             const companyId = parseInt(session.metadata?.company_id || '1', 10);
             const tokenCount = item.quantity || 1;
             const customMessage = `Purchase of ${tokenCount} tokens`;
