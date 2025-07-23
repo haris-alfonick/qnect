@@ -43,10 +43,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: "usd",
           product_data: {
-            name: item.name,
-            metadata: {
-              plan: item.plan
-            }
+            name: `${item.name} (${item.plan})`,
           },
           unit_amount: item.price * 100,
         },
@@ -64,7 +61,7 @@ export async function POST(req: NextRequest) {
           email: customer.email,
           referEmail: customer.referEmail,
           message: customer.message,
-          token_reference: tokenReference
+          token_reference: tokenReference,
         }),
         company_id: company_id || ''
       }
