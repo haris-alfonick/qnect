@@ -2,7 +2,6 @@
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons/faCircleXmark";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
 // import FreeTrial from "./FreeTrial";
 import { useAppDispatch } from "@/lib/hooks";
 import { addToCart, setCartOpen } from "@/lib/features/cart/cartSlice";
