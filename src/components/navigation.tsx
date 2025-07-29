@@ -304,7 +304,8 @@ const NavHeader = () => {
                     <ul className='group-hover/release:block hidden absolute top-0 -right-28 bg-white shadow-lg rounded p-3'>
                       <li><Link href="https://www.qnect.com/release-notes">Release Notes</Link></li>
                     </ul>
-                    </li>
+                  </li>
+                  <li><Link href="tokens">QuickConnect</Link></li>
                   </ul>
                 </div>
             </li>
@@ -339,9 +340,6 @@ const NavHeader = () => {
                     </li>
                   </ul>
                 </div>
-            </li>
-            <li>
-              <Link href="tokens">Tokens</Link>
             </li>
             {/* <li>
               <Link href='https://app.qnect.com/sign-in/?hsCtaTracking=918221c6-078a-4946-b0d1-d209a098a820%7Cbdb26f12-aca1-4773-b130-48f4bb268c6b'>Sign In</Link>
@@ -422,15 +420,10 @@ const NavHeader = () => {
                 </button>
                 {isSoftwareDropdownOpen && (
                   <ul className='mt-2 ml-4 space-y-2'>
-                    <li>
-                      <Link href='#'>Early Connected Models</Link>
-                    </li>
-                    <li>
-                      <Link href="https://www.qnect.com/qnect-autodesk-revit/support">Customer Support</Link>
-                    </li>
-                    <li>
-                      <Link href='https://www.qnect.com/quickqnect'>QuickQnect</Link>
-                    </li>
+                    <li><Link href='#'>Early Connected Models</Link></li>
+                    <li><Link href="https://www.qnect.com/qnect-autodesk-revit/support">Customer Support</Link></li>
+                    <li><Link href='https://www.qnect.com/quickqnect'>QuickQnect</Link></li>
+                    <li><Link href="tokens">QuickConnect</Link></li>
                     <li><Link href="https://www.qnect.com/release-notes">Release Notes</Link></li>
                   </ul>
                 )}

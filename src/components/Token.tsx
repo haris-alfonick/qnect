@@ -129,7 +129,7 @@ const TokenComponent = () => {
             <p>TOKENS</p>
           </div>
           <p className='xl:text-lg font-medium'>
-            MODELING, ENGINEERING & OPTIMAZATION
+            MODELING, ENGINEERING & OPTIMIZATION
           </p>
           {/* <button className='bg-[#83C44F] text-white text-2xl py-2 px-4 rounded-xl w-full mt-5'>
             Select
