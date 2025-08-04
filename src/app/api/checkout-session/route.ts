@@ -3,6 +3,7 @@ import Stripe from "stripe";
 
 interface CartItem {
   name: string;
+  plan: string;
   price: number;
   quantity: number;
 }
@@ -19,6 +20,7 @@ export async function POST(req: NextRequest) {
     console.log('Request body:', body);
     
     const { items, customer, company_id } = body;
+    console.log('Customer:', customer);
 
     if (!items || !customer) {
       console.error('Missing required fields:', { items, customer });
@@ -27,7 +29,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
+    console.log(items)
     // Create a reference ID for the Autodesk token
     const tokenReference = `token_${Date.now()}`;
 
@@ -41,7 +43,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: "usd",
           product_data: {
-            name: item.name,
+            name: item.plan,
           },
           unit_amount: item.price * 100,
         },
@@ -59,7 +61,7 @@ export async function POST(req: NextRequest) {
           email: customer.email,
           referEmail: customer.referEmail,
           message: customer.message,
-          token_reference: tokenReference
+          token_reference: tokenReference,
         }),
         company_id: company_id || ''
       }

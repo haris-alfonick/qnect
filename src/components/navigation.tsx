@@ -23,6 +23,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { setReferrerEmail } from '@/lib/features/checkout/checkoutSlice'
 // import CheckoutButton from './CheckoutButton'
 
 // LoadStripe
@@ -64,19 +65,46 @@ const NavHeader = () => {
   const cartItemsData = useAppSelector((state) => state.cart.items)
   const dispatch = useAppDispatch()
   const isCartOpen = useAppSelector((state) => state.cart.isCartOpen)
+  const referrerEmail = useAppSelector((state) => state.checkout.referrerEmail)
 
   function handleCheckout() {
     // Check if any item is Free Trial or Token
-    const hasSpecialItem = cartItemsData.some(item => item.plan === 'pro' || item.name === 'Token');
+    //const hasSpecialItem = cartItemsData.some(item => item.plan === 'pro' || item.name === 'Token');
   
-    if (hasSpecialItem) {
-      setShowAlertDialog(true);
+    //if (hasSpecialItem) {
+      //setShowAlertDialog(true);
+      //return;
+      // Initiate Autodesk OAuth flow
+      const cartItems = cartItemsData.map(item => ({
+        name: item.name,
+        price: item.price,
+        image: `/images/${item.name === "Revit" ? "revit" : "coin"}.png`,
+        quantity: item.quantity,
+      }));
+
+      // Store cart items in session storage for after OAuth
+      sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+      // Initiate Autodesk OAuth flow
+      const authUrl = new URL('https://developer.api.autodesk.com/authentication/v2/authorize');
+      authUrl.searchParams.append('response_type', 'code');
+      authUrl.searchParams.append('client_id', process.env.NEXT_PUBLIC_AUTODESK_CLIENT_ID!);
+      authUrl.searchParams.append('redirect_uri', `https://qnect-zeta.vercel.app/api/auth/callback`);
+      authUrl.searchParams.append('scope', 'data:read');
+      
+      // Generate and store a random state value
+      const state = Math.random().toString(36).substring(7);
+      sessionStorage.setItem('autodesk_auth_state', state);
+      authUrl.searchParams.append('state', state);
+
+      // Redirect to Autodesk OAuth
+      window.location.href = authUrl.toString();
       return;
-    }
+    //}
 
     // For non-special items, go directly to checkout
-    dispatch(setCartOpen(false));
-    router.push('/checkout');
+    //dispatch(setCartOpen(false));
+    //router.push('/checkout');
   }
 
   // const handleProceedToCheckout = () => {
@@ -217,13 +245,15 @@ const NavHeader = () => {
             </div>
 
             <div className='mt-4 [&_strong]:font-semibold [&>p]:max-w-96 [&>p]:text-sm [&>p]:pt-2 [&>p]:leading-5'>
-              <strong>Send Reward to Friend</strong>
+              <strong>Referrer Email</strong>
               <input
                 type='email'
+                value={referrerEmail}
                 placeholder='Enter Email Address'
                 className='w-full border px-2 py-1 rounded-lg mt-2'
+                onChange={e => dispatch(setReferrerEmail(e.target.value))}
               />
-              <p>Your friend show told you account Qnect so we can send them a small thank you.</p>
+              <p>Your friend introduced you to Qnect, so we&apos;d love to send them a small thank-you gift!</p>
             </div>
             <div className='flex flex-col mt-4 [&_p]:text-gray-500 [&_button]:bg-black [&_button]:text-white [&_button]:rounded [&_button]:py-2 [&_button]:mt-4'>
               <div className='flex flex-row items-center justify-between font-semibold'>
@@ -270,11 +300,11 @@ const NavHeader = () => {
                     </ul>
                     </li>
                   <li className='group/release relative'>
-                    <Link href="https://www.qnect.com/quickqnect">QuickQnect</Link>
+                    <Link href="tokens">QuickConnect</Link>
                     <ul className='group-hover/release:block hidden absolute top-0 -right-28 bg-white shadow-lg rounded p-3'>
                       <li><Link href="https://www.qnect.com/release-notes">Release Notes</Link></li>
                     </ul>
-                    </li>
+                  </li>
                   </ul>
                 </div>
             </li>
@@ -309,9 +339,6 @@ const NavHeader = () => {
                     </li>
                   </ul>
                 </div>
-            </li>
-            <li>
-              <Link href="tokens">Tokens</Link>
             </li>
             {/* <li>
               <Link href='https://app.qnect.com/sign-in/?hsCtaTracking=918221c6-078a-4946-b0d1-d209a098a820%7Cbdb26f12-aca1-4773-b130-48f4bb268c6b'>Sign In</Link>
@@ -392,15 +419,9 @@ const NavHeader = () => {
                 </button>
                 {isSoftwareDropdownOpen && (
                   <ul className='mt-2 ml-4 space-y-2'>
-                    <li>
-                      <Link href='#'>Early Connected Models</Link>
-                    </li>
-                    <li>
-                      <Link href="https://www.qnect.com/qnect-autodesk-revit/support">Customer Support</Link>
-                    </li>
-                    <li>
-                      <Link href='https://www.qnect.com/quickqnect'>QuickQnect</Link>
-                    </li>
+                    <li><Link href='#'>Early Connected Models</Link></li>
+                    <li><Link href="https://www.qnect.com/qnect-autodesk-revit/support">Customer Support</Link></li>
+                    <li><Link href="tokens">QuickConnect</Link></li>
                     <li><Link href="https://www.qnect.com/release-notes">Release Notes</Link></li>
                   </ul>
                 )}

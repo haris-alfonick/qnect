@@ -10,33 +10,14 @@ import { useRouter } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_StripePublishableKey!);
-
-interface Company {
-  id: number;
-  name: string;
-}
-
-interface CompanyData {
-  companies: Company[];
-  message?: string;
-}
 
 export default function CheckoutPage() {
   const items = useAppSelector(selectCartItems);
   const total = useAppSelector(selectCartTotal);
   const isInitialized = useAppSelector(selectCartInitialized);
+  const referEmail = useAppSelector((state) => state.checkout.referrerEmail);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -45,9 +26,6 @@ export default function CheckoutPage() {
     message: string;
   }>({ type: null, message: '' });
   const formRef = useRef<CheckoutFormRef>(null);
-  const [showCompanyDialog, setShowCompanyDialog] = useState(false);
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string>("");
-  const [getCompanyData, setGetCompanyData] = useState<CompanyData>({ companies: [] });
 
   useEffect(() => {
     if (isInitialized) {
@@ -67,7 +45,6 @@ export default function CheckoutPage() {
   const handleFormSubmit = (data: {
     firstName: string;
     lastName: string;
-    username: string;
     email: string;
     referEmail?: string;
     message?: string;
@@ -78,7 +55,6 @@ export default function CheckoutPage() {
   const sessionCheckout = async (formData: {
     firstName: string;
     lastName: string;
-    username: string;
     email: string;
     referEmail?: string;
     message?: string;
@@ -96,19 +72,18 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           items: items.map(item => ({
             name: item.name,
+            plan: item.plan,
             price: item.price,
             quantity: item.quantity,
           })),
           customer: {
             firstName: formData.firstName,
             lastName: formData.lastName,
-            username: formData.username,
             email: formData.email,
-            referEmail: formData.referEmail,
+            referEmail: referEmail || undefined,
             message: formData.message
           },
-          ...(autodeskToken && { autodesk_token: autodeskToken }),
-          ...(selectedCompanyId && { companyId: selectedCompanyId })
+          ...(autodeskToken && { autodesk_token: autodeskToken })
         }),
       });
 
@@ -139,7 +114,6 @@ export default function CheckoutPage() {
   const handleCheckout = async (formData: {
     firstName: string;
     lastName: string;
-    username: string;
     email: string;
     referEmail?: string;
     message?: string;
@@ -151,7 +125,6 @@ export default function CheckoutPage() {
       const hasAutodeskAuth = sessionStorage.getItem('autodesk_auth_state');
       if (!hasAutodeskAuth) {
         // Verify email first
-        // const userType = items[0]?.plan === 'Free Trial' ? 'REVIT' : 'QNECT';
         const verifyResponse = await fetch('/api/verify-email', {
           method: 'POST',
           headers: {
@@ -165,11 +138,14 @@ export default function CheckoutPage() {
 
         const verifyData = await verifyResponse.json();
         if (!verifyData.success) {
+          setIsProcessing(false);
           throw new Error(verifyData.message || 'Email verification failed');
         }
       }
+
       // Check if it's a free trial
-      const isFreeTrial = items.length === 1 && items[0].plan === 'Free Trial';
+      const isFreeTrial = items.length === 1 && items[0]?.name === 'Revit' && items[0]?.plan === 'Free Trial';
+      console.log('isFreeTrial:', isFreeTrial, 'items:', items);
 
       if (isFreeTrial) {
         // Process free trial directly
@@ -182,7 +158,6 @@ export default function CheckoutPage() {
             customer: {
               firstName: formData.firstName,
               lastName: formData.lastName,
-              username: formData.username,
               email: formData.email,
               referEmail: formData.referEmail,
               message: formData.message
@@ -192,6 +167,7 @@ export default function CheckoutPage() {
 
         if (!response.ok) {
           const errorData = await response.json();
+          setIsProcessing(false);
           throw new Error(errorData.error || 'Failed to process free trial');
         }
 
@@ -217,28 +193,28 @@ export default function CheckoutPage() {
           throw new Error('Autodesk authentication required');
         }
       }
-
-      const getCompanies = await fetch('/api/companies', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'get_company',
-          ut: 'REVIT',
-          email: formData.email,
-        }),
-      });
+      await sessionCheckout(formData, autodeskToken);
+      // const getCompanies = await fetch('/api/companies', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     action: 'get_company',
+      //     ut: 'REVIT',
+      //     email: formData.email,
+      //   }),
+      // });
       
-      const getCompanyData = await getCompanies.json();
+      // const getCompanyData = await getCompanies.json();
       
-      if (getCompanyData.companies.length > 1) {
-        console.log(getCompanyData.companies)
-        setGetCompanyData({ companies: getCompanyData.companies });
-        setShowCompanyDialog(true);
-      } else {
-        await sessionCheckout(formData, autodeskToken);
-      }
+      // if (getCompanyData.companies.length > 1) {
+      //   console.log(getCompanyData.companies)
+      //   setGetCompanyData({ companies: getCompanyData.companies });
+      //   setShowCompanyDialog(true);
+      // } else {
+      //   await sessionCheckout(formData, autodeskToken);
+      // }
 
     } catch (error) {
       console.error('Error during checkout:', error);
@@ -246,16 +222,46 @@ export default function CheckoutPage() {
         type: 'error',
         message: error instanceof Error ? error.message : 'An error occurred during checkout. Please try again.'
       });
+      setIsProcessing(false);
     }
   };
 
   const handleProceedToCheckout = () => {
+    console.log('Proceeding to checkout...');
     if (formRef.current) {
       const isValid = formRef.current.validateForm();
+      console.log('Form validation result:', isValid);
+      
       if (isValid) {
         const formData = formRef.current.getFormData();
-        handleCheckout(formData);
+        console.log('Form data:', formData);
+        
+        // Check if it's a free trial
+        const isFreeTrial = items.length === 1 && items[0]?.name === 'Revit' && items[0]?.plan === 'Free Trial';
+        console.log('Is free trial:', isFreeTrial);
+        
+        if (isFreeTrial) {
+          console.log('Processing free trial...');
+          handleCheckout(formData);
+        } else {
+          console.log('Processing regular checkout...');
+          handleCheckout(formData);
+        }
+      } else {
+        console.log('Form validation failed');
+        setStatus({
+          type: 'error',
+          message: 'Please fill in all required fields correctly.'
+        });
+        setIsProcessing(false);
       }
+    } else {
+      console.log('Form reference not found');
+      setStatus({
+        type: 'error',
+        message: 'Form reference not found. Please try again.'
+      });
+      setIsProcessing(false);
     }
   };
 
@@ -342,56 +348,6 @@ export default function CheckoutPage() {
         </div>
       </div>
       <Footer />
-      
-      <Dialog open={showCompanyDialog} onOpenChange={() => {
-        setShowCompanyDialog(false);
-      }}>
-        <DialogContent className="bg-white sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Select Company </DialogTitle>
-            <DialogDescription>
-              Please select a company to proceed with the checkout.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <RadioGroup
-              value={selectedCompanyId}
-              onValueChange={setSelectedCompanyId}
-              className="grid gap-4"
-            >
-              {getCompanyData.companies.map((company) => (
-                <div key={company.id} className="flex items-center space-x-2">
-                  <RadioGroupItem value={company.id.toString()} id={`company-${company.id}`} />
-                  <Label htmlFor={`company-${company.id}`}>{company.name}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
-          <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => {
-              setShowCompanyDialog(false);
-              setIsProcessing(false);
-            }}>
-              Cancel
-            </Button>
-            <Button 
-              onClick={() => {
-                if (selectedCompanyId && formRef.current) {
-                  const formData = formRef.current.getFormData();
-                  if (formData) {
-                    setSelectedCompanyId(selectedCompanyId);
-                    sessionCheckout(formData, sessionStorage.getItem('autodesk_auth_state'));
-                    setShowCompanyDialog(false);
-                  }
-                }
-              }} 
-              disabled={!selectedCompanyId}
-            >
-              Continue
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

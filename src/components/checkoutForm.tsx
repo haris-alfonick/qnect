@@ -14,7 +14,6 @@ interface CheckoutFormProps {
   onFormSubmit: (formData: {
     firstName: string;
     lastName: string;
-    username: string;
     email: string;
     referEmail?: string;
     message?: string;
@@ -26,7 +25,6 @@ export interface CheckoutFormRef {
   getFormData: () => {
     firstName: string;
     lastName: string;
-    username: string;
     email: string;
     referEmail?: string;
     message?: string;
@@ -37,7 +35,6 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    username: '',
     email: '',
     referEmail: '',
     message: ''
@@ -48,12 +45,11 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
   useEffect(() => {
     const userDetails = sessionStorage.getItem('userDetails');
     if (userDetails) {
-      const { firstName, lastName, userName, emailId } = JSON.parse(userDetails);
+      const { firstName, lastName, emailId } = JSON.parse(userDetails);
       setFormData(prev => ({
         ...prev,
         firstName: firstName || '',
         lastName: lastName || '',
-        username: userName || '',
         email: emailId || ''
       }));
     }
@@ -68,9 +64,9 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
     if (!formData.lastName.trim()) {
       newErrors.lastName = 'Last name is required';
     }
-    if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
-    }
+    // if (!formData.username.trim()) {
+    //   newErrors.username = 'Username is required';
+    // }
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -138,7 +134,7 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
           {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
         </div>
       </div>
-      <div>
+      {/* <div>
         <Input
           type='text'
           name='username'
@@ -148,7 +144,7 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
           className={errors.username ? 'border-red-500' : ''}
         />
         {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
-      </div>
+      </div> */}
       <div className='flex sm:flex-row flex-col items-center w-full sm:gap-x-3 max-sm:gap-y-3 [&>div]:w-full'>
         <div>
           <Input
@@ -161,7 +157,7 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
           />
           {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
         </div>
-        <div>
+        {/* <div>
           <Input
             type='email'
             name='referEmail'
@@ -171,7 +167,7 @@ const CheckoutField = forwardRef<CheckoutFormRef, CheckoutFormProps>(({ onFormSu
             className={errors.referEmail ? 'border-red-500' : ''}
           />
           {errors.referEmail && <p className="text-red-500 text-sm mt-1">{errors.referEmail}</p>}
-        </div>
+        </div> */}
       </div>
       <div>
         <Textarea

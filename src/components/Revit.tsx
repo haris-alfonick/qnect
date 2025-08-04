@@ -2,7 +2,6 @@
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons/faCircleXmark";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
 // import FreeTrial from "./FreeTrial";
 import { useAppDispatch } from "@/lib/hooks";
 import { addToCart, setCartOpen } from "@/lib/features/cart/cartSlice";
@@ -52,9 +51,9 @@ export default function RevitPage() {
       </div>
 
       <div className="mt-16 text-center [&_h2]:text-3xl [&_h2]:font-bold [&_p]:text-[#666666] [&_p]:mt-2 [&_button]:text-white [&_button]:py-2 [&_button]:px-4 [&_button]:rounded-sm [&_button]:text-md [&_button]:w-auto [&_button]:bg-[#CF5127] [&_button]:mt-4">
-          <h2>FREE 30-day Trial</h2>
-          <p>Visit the <strong>Autodesk App</strong> Store to download!</p>
-          <Link href="https://apps.autodesk.com/RVT/en/Detail/Index?id=455692108544260402&appLang=en&os=Win64"><button>Visit The App Store</button></Link>
+          <h2>FREE 14-day Trial</h2>
+          {/* <p>Visit the <strong>Autodesk App</strong> Store to download!</p>
+          <Link href="https://apps.autodesk.com/RVT/en/Detail/Index?id=455692108544260402&appLang=en&os=Win64"><button>Visit The App Store</button></Link> */}
       </div>
 
       <h2 className="text-center text-2xl md:text-4xl mt-16 avenir-bold">Choose Your Plan Now</h2>
@@ -89,7 +88,7 @@ export default function RevitPage() {
               <li><span>Set connection preferences</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleXmark} /></span></li>
               <li><span>Beam & column doubler optimization</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleXmark} /></span></li>
               <strong>Additional Benefits</strong>
-              <li><span>30-day Trial</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleXmark} /></span></li>
+              {/* <li><span>30-day Trial</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleXmark} /></span></li> */}
               <li><span>Customer Support</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleCheck} /></span></li>
               <li><span>Live Training</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleCheck} /></span></li>
               <strong>Annual Pricing</strong>
@@ -112,12 +111,12 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li className="2xl:mt-6 lg:mt-8 mt-4"><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li><FontAwesomeIcon icon={faCircleCheck} /></li>
+            {/* <li className="2xl:mt-6 lg:mt-8 mt-4"><FontAwesomeIcon icon={faCircleXmark} /></li> */}
+            <li className="2xl:mt-6 lg:mt-8 mt-4"><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li className="lg:mt-6"><strong>$0</strong></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li><strong>30 Days</strong></li>
+            <li><strong>14 Days</strong></li>
             <li className='lg:mt-5 lg:!px-2 !px-0'><button onClick={() => handleRevitLicense('Free Trial')} className='border border-[#CF5127] text-[#CF5127] hover:text-white hover:bg-[#CF5127] lg:py-1 py-2 sm:px-0 px-6 w-full rounded-md'>Get Free Trial</button></li>
             {/* <FreeTrial /> */}
           </ul>
@@ -132,12 +131,12 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li><FontAwesomeIcon icon={faCircleCheck} /></li>
+            {/* <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleXmark} /></li> */}
+            <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li className="lg:mt-6"><strong>$950</strong></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li><strong>Unlimited</strong></li>
+            <li><strong>1 year</strong></li>
             <li className="mt-6"><button onClick={() => handleRevitLicense('express')} className="border border-[#52B3CD] text-[#52B3CD] hover:text-white hover:bg-[#52B3CD] py-1 w-full rounded-md">Buy Subscription</button></li>
           </ul>
         </div>
@@ -151,12 +150,12 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
+            {/* <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleCheck} /></li> */}
             <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleCheck} /></li>
-            <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li className="lg:mt-6"><strong>$1900</strong></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
-            <li><strong>Unlimited</strong></li>
+            <li><strong>1 year</strong></li>
             <li className="mt-6 !leading-3"><button onClick={() => handleRevitLicense('pro')} className="border border-[#85C451] text-[#85C451] hover:text-white hover:bg-[#85C451] py-1 w-full rounded-md">Buy Subscription</button></li>
           </ul>
         </div>

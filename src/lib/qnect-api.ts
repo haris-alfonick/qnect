@@ -22,7 +22,7 @@ interface RevitPurchaseData {
   txn_id: string;
   company_id?: number | string;
   quantity: number;
-  txn_type: 'TRIAL' | 'subscr_payment';
+  txn_type: 'TRIAL' | 'subscr_payment_express' | 'subscr_payment_pro';
   last_name: string;
   first_name: string;
   buyer_adsk_account: string;
@@ -128,8 +128,15 @@ export async function processRevitPurchase(data: RevitPurchaseData): Promise<Qne
   return callQnectApi('process_revit', payload);
 }
 
-export async function addTokens(userType: 'TEKLA', companyId: number, tokenCount: number, customMessage: string, ref: string): Promise<QnectApiResponse> {
+export async function addTokens(
+  userType: 'TEKLA',
+  companyId: number,
+  tokenCount: number,
+  customMessage: string,
+  ref: string
+): Promise<QnectApiResponse> {
   return callQnectApi('add_tokens', {
+    action: 'add_tokens', // ✅ add this line
     ut: userType,
     company: companyId,
     t: tokenCount,
