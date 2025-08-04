@@ -300,12 +300,11 @@ const NavHeader = () => {
                     </ul>
                     </li>
                   <li className='group/release relative'>
-                    <Link href="https://www.qnect.com/quickqnect">QuickQnect</Link>
+                    <Link href="tokens">QuickConnect</Link>
                     <ul className='group-hover/release:block hidden absolute top-0 -right-28 bg-white shadow-lg rounded p-3'>
                       <li><Link href="https://www.qnect.com/release-notes">Release Notes</Link></li>
                     </ul>
                   </li>
-                  <li><Link href="tokens">QuickConnect</Link></li>
                   </ul>
                 </div>
             </li>
@@ -422,7 +421,6 @@ const NavHeader = () => {
                   <ul className='mt-2 ml-4 space-y-2'>
                     <li><Link href='#'>Early Connected Models</Link></li>
                     <li><Link href="https://www.qnect.com/qnect-autodesk-revit/support">Customer Support</Link></li>
-                    <li><Link href='https://www.qnect.com/quickqnect'>QuickQnect</Link></li>
                     <li><Link href="tokens">QuickConnect</Link></li>
                     <li><Link href="https://www.qnect.com/release-notes">Release Notes</Link></li>
                   </ul>

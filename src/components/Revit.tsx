@@ -88,7 +88,7 @@ export default function RevitPage() {
               <li><span>Set connection preferences</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleXmark} /></span></li>
               <li><span>Beam & column doubler optimization</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleXmark} /></span></li>
               <strong>Additional Benefits</strong>
-              <li><span>30-day Trial</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleXmark} /></span></li>
+              {/* <li><span>30-day Trial</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleXmark} /></span></li> */}
               <li><span>Customer Support</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleCheck} /></span></li>
               <li><span>Live Training</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleCheck} /></span></li>
               <strong>Annual Pricing</strong>
@@ -111,12 +111,12 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li className="2xl:mt-6 lg:mt-8 mt-4"><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li><FontAwesomeIcon icon={faCircleCheck} /></li>
+            {/* <li className="2xl:mt-6 lg:mt-8 mt-4"><FontAwesomeIcon icon={faCircleXmark} /></li> */}
+            <li className="2xl:mt-6 lg:mt-8 mt-4"><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li className="lg:mt-6"><strong>$0</strong></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li><strong>30 Days</strong></li>
+            <li><strong>14 Days</strong></li>
             <li className='lg:mt-5 lg:!px-2 !px-0'><button onClick={() => handleRevitLicense('Free Trial')} className='border border-[#CF5127] text-[#CF5127] hover:text-white hover:bg-[#CF5127] lg:py-1 py-2 sm:px-0 px-6 w-full rounded-md'>Get Free Trial</button></li>
             {/* <FreeTrial /> */}
           </ul>
@@ -131,12 +131,12 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li><FontAwesomeIcon icon={faCircleCheck} /></li>
+            {/* <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleXmark} /></li> */}
+            <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li className="lg:mt-6"><strong>$950</strong></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li><strong>Unlimited</strong></li>
+            <li><strong>1 year</strong></li>
             <li className="mt-6"><button onClick={() => handleRevitLicense('express')} className="border border-[#52B3CD] text-[#52B3CD] hover:text-white hover:bg-[#52B3CD] py-1 w-full rounded-md">Buy Subscription</button></li>
           </ul>
         </div>
@@ -150,12 +150,12 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
+            {/* <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleCheck} /></li> */}
             <li className="2xl:mt-6 mt-8"><FontAwesomeIcon icon={faCircleCheck} /></li>
-            <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li className="lg:mt-6"><strong>$1900</strong></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
-            <li><strong>Unlimited</strong></li>
+            <li><strong>1 year</strong></li>
             <li className="mt-6 !leading-3"><button onClick={() => handleRevitLicense('pro')} className="border border-[#85C451] text-[#85C451] hover:text-white hover:bg-[#85C451] py-1 w-full rounded-md">Buy Subscription</button></li>
           </ul>
         </div>
