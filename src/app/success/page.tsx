@@ -6,8 +6,12 @@ import Link from 'next/link';
 import NavHeader from '@/components/navigation';
 import Footer from '@/components/footer';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { useSearchParams } from 'next/navigation';
 
 export default function ThankYouSection() {
+  const searchParams = useSearchParams();
+  const plan = searchParams.get('plan') || '';
+  //const sessionId = searchParams.get('session_id') || '';
 
   return (
     <>
@@ -18,7 +22,7 @@ export default function ThankYouSection() {
       <div className="text-center max-w-lg">
         <FontAwesomeIcon icon={faCheckCircle} width={60} height={60} className="text-green-500 mx-auto md:text-6xl text-3xl sm:mb-6 mb-4" />
         <h1 className="text-3xl md:text-4xl font-bold mb-2">Thank You!</h1>
-        <p className="md:text-lg text-base font-medium text-gray-800 mb-4">You’ve Successfully Subscribed.</p>
+        <p className="md:text-lg text-base font-medium text-gray-800 mb-4">You’ve Successfully Subscribed to <strong>{plan}</strong>.</p>
 
         <h2 className="text-xl md:text-2xl font-semibold mb-2">Your Premium Access is Now Active</h2>
         <p className="text-gray-600 mb-6">Enjoy unlimited features and priority support.</p>
