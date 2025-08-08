@@ -80,9 +80,7 @@ const TokenComponent = () => {
         <div className='lg:hidden flex flex-wrap px-4 justify-center gap-x-2 gap-y-2 md:[&_button]:text-lg [&_button]:text-sm [&_button]:text-white [&_button]:rounded-[6px] [&_button]:py-2 [&_button]:px-4'>
           <button className='bg-[#CF5127]'>Modeling</button>
           <button className='bg-[#52B3CD]'>Modeling & Engineering</button>
-          <button className='bg-[#85C451]'>
-            Modeling ,Engineering & Optimization
-          </button>
+          <button className='bg-[#85C451]'>Modeling ,Engineering & Optimization</button>
         </div>
       </div>
 
