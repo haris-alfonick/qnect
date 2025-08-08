@@ -95,7 +95,7 @@ export default function RevitPage() {
               <li><span>1 License</span> <span className="font-bold text-xl iconPlanText">$0</span></li>
               <li><span>Multiple License</span> <span className="iconPlanText"><FontAwesomeIcon icon={faCircleXmark} /></span></li>
               <li><span>Time Period</span> <span className="font-bold iconPlanText">30 Days</span></li>
-              <li className="!mt-8 !block lg:!justify-start !justify-center lg:text-start text-center !border-b-0"><strong className="!px-0">Get The Great Our Service</strong></li>
+              <li className="!mt-8 !hidden lg:!justify-start !justify-center lg:text-start text-center !border-b-0"><strong className="!px-0">Get The Great Our Service</strong></li>
             <div className="lg:!hidden !block w-fit m-auto !mt-2 [&_li]:!block"><button onClick={() => handleRevitLicense('trail')} className='border border-[#CF5127] text-[#CF5127] hover:text-white hover:bg-[#CF5127] lg:py-1 py-2 sm:px-0 px-6 w-full rounded-md'>
               Get Free Trial
             </button></div>
@@ -103,7 +103,7 @@ export default function RevitPage() {
         </div>
         <div className="lg:col-span-2 sm:col-span-4 col-span-5 lg:block hidden">
           <strong className="planLabel bg-[#CF5127]">Free Trial</strong>
-          <ul className="text-center list-none list-inside [&_strong]:text-xl xl:mt-[6px]">
+          <ul className="text-center list-none list-inside [&_strong]:text-xl xl:mt-[3px]">
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>

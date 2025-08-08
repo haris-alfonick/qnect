@@ -53,8 +53,13 @@ const TokenComponent = () => {
       <div className='md:mt-16 my-10 px-6'>
         <iframe
           src='https://player.vimeo.com/video/1107121441'
-          className='w-full lg:h-[500] md:h-[350px] h-[200px] mx-auto'
+          className='hidden w-full lg:h-[500] md:h-[350px] h-[200px] mx-auto'
           allow='autoplay;'
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/cIv0WDwR0HA"
+          className="lg:w-[935px] sm:w-[80%] w-full lg:h-[500px] sm:h-[350px] h-full mx-auto"
+          allow="autoplay;"
         ></iframe>
       </div>
 
@@ -217,7 +222,7 @@ const TokenComponent = () => {
                     }
                   }}
                 >Buy Tokens</button>
-                <button className='border border-[#333333] text-[#333333]'>
+                <button className='border border-[#333333] text-[#333333] hidden'>
                   Learn How Token Works
                 </button>
               </div>
