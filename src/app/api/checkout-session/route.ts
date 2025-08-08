@@ -36,7 +36,8 @@ export async function POST(req: NextRequest) {
     // Store the token securely (in a real app, this would be in a database)
     // For now, we'll just log it
     console.log('Storing Autodesk token with reference:', tokenReference);
-
+    
+    const plan = items[0]?.plan || '';
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: items.map((item: CartItem) => ({
@@ -51,7 +52,7 @@ export async function POST(req: NextRequest) {
       })),
       mode: "payment",
       automatic_tax: { enabled: true },
-      success_url: `${req.nextUrl.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${req.nextUrl.origin}/success?plan=${encodeURIComponent(plan)}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.nextUrl.origin}/cancel`,
       metadata: {
         customer: JSON.stringify({
