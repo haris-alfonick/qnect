@@ -2,7 +2,7 @@ import NavHeader from './navigation'
 
 const tokenHeader = () => {
   return (
-    <header className='relative w-full h-screen overflow-hidden max-lg:h-[600px]'>
+    <header className='relative w-full h-screen overflow-hidden max-lg:h-[700px]'>
       <div className="overlayWrap absolute inset-0 w-full h-full" style={{ clipPath: 'polygon(0 0, 100% 0%, 100% 80%, 0 95%)' }}>
         <video
           src="https://www.qnect.com/hubfs/Untitled.mov"
