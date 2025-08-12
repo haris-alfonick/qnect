@@ -222,9 +222,15 @@ const TokenComponent = () => {
                     }
                   }}
                 >Buy Tokens</button>
-                <button className='border border-[#333333] text-[#333333] hidden'>
-                  Learn How Token Works
-                </button>
+                <Link
+                  href="https://www.qnect.com/quickqnect/pricing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <button className="border border-[#333333] text-[#333333]">
+                    Learn How Token Works
+                  </button>
+                </Link>
               </div>
               <p className='text-[13px] pt-4'>
                 Credit and debit cards, PayPal, pay by bank, and direct debit{' '}

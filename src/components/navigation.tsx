@@ -69,9 +69,9 @@ const NavHeader = () => {
 
   function handleCheckout() {
     // Check if any item is Free Trial or Token
-    //const hasSpecialItem = cartItemsData.some(item => item.plan === 'pro' || item.name === 'Token');
+    const hasSpecialItem = cartItemsData.some(item => item.name === 'Token');
   
-    //if (hasSpecialItem) {
+    if (!hasSpecialItem) {
       //setShowAlertDialog(true);
       //return;
       // Initiate Autodesk OAuth flow
@@ -100,11 +100,11 @@ const NavHeader = () => {
       // Redirect to Autodesk OAuth
       window.location.href = authUrl.toString();
       return;
-    //}
+    }
 
     // For non-special items, go directly to checkout
-    //dispatch(setCartOpen(false));
-    //router.push('/checkout');
+    dispatch(setCartOpen(false));
+    router.push('/checkout');
   }
 
   // const handleProceedToCheckout = () => {
