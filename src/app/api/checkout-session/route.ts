@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     const plan = items[0]?.plan || '';
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card", "us_bank_account"],
-      line_items: items.map((item: CartItem) => ({
+      line_items: items.map((item: CartItem) => ({ 
         price_data: {
           currency: "usd",
           product_data: {
