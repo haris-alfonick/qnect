@@ -178,7 +178,7 @@ export default function CheckoutPage() {
         
         // Redirect to success page after 3 seconds
         setTimeout(() => {
-          router.push('/success');
+          router.push('/success?plan=free trial');
         }, 3000);
         return;
       }
