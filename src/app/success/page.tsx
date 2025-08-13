@@ -7,7 +7,6 @@ import NavHeader from '@/components/navigation';
 import Footer from '@/components/footer';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function SuccessPage() {
   return (
@@ -23,12 +22,6 @@ function SuccessContent() {
   const plan = searchParams.get('plan') || '';
   //const sessionId = searchParams.get('session_id') || '';
   const showDownload = !plan.toLowerCase().includes('tokens');
-
-  // useEffect(() => {
-  //   if (!plan) {
-  //     router.push('/');
-  //   }
-  // }, [plan, router]);
 
   return (
     <>
