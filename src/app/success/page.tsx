@@ -6,7 +6,7 @@ import Link from 'next/link';
 import NavHeader from '@/components/navigation';
 import Footer from '@/components/footer';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 export default function SuccessPage() {
   return (
@@ -18,7 +18,6 @@ export default function SuccessPage() {
 
 function SuccessContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const plan = searchParams.get('plan') || '';
   //const sessionId = searchParams.get('session_id') || '';
   const showDownload = !plan.toLowerCase().includes('tokens');
