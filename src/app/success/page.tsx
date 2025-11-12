@@ -54,7 +54,8 @@ function SuccessContent() {
 
             {showDownload && (
               <Link
-                href="https://dev1.qnect.com/cgi-bin/InitiateDBImport/Download.cgi?action=upgrade&ID=QnectRevitSetup.msi"
+                href="http://app.qnect.com/cgi-bin/InitiateDBImport/Download.cgi?action=upgrade&ID=QnectRevitSetup.msi"
+                download="QnectRevitSetup.msi"
                 className="inline-block bg-orange-600 text-white text-base font-semibold px-6 py-2.5 rounded-full hover:bg-orange-700 transition"
               >
                 Download Now

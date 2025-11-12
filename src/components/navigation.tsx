@@ -89,7 +89,7 @@ const NavHeader = () => {
       const authUrl = new URL('https://developer.api.autodesk.com/authentication/v2/authorize');
       authUrl.searchParams.append('response_type', 'code');
       authUrl.searchParams.append('client_id', process.env.NEXT_PUBLIC_AUTODESK_CLIENT_ID!);
-      authUrl.searchParams.append('redirect_uri', `https://qnect-zeta.vercel.app/api/auth/callback`);
+      authUrl.searchParams.append('redirect_uri', `https://app.qnect.com/qnect-commerce/api/auth/callback`);
       authUrl.searchParams.append('scope', 'data:read');
       
       // Generate and store a random state value
@@ -300,7 +300,7 @@ const NavHeader = () => {
                     </ul>
                     </li>
                   <li className='group/release relative'>
-                    <Link href="tokens">QuickConnect</Link>
+                    <Link href="/tokens">QuickConnect</Link>
                     <ul className='group-hover/release:block hidden absolute top-0 -right-28 bg-white shadow-lg rounded p-3'>
                       <li><Link href="https://www.qnect.com/release-notes">Release Notes</Link></li>
                     </ul>
@@ -364,7 +364,7 @@ const NavHeader = () => {
             />
           </button>
 
-          <Link  href="https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/click?encryptedPayload=AVxigLLyBm5boAh5TN7zvyXe18NU3V7hGyL0ALywbkMv0ahB7OpBkUT8IqTFnmwXGpvnoEPulc4GUtA4NP1BuS91PEWxCmnPfF9NhsghW2%2BXMMWC4tq3va7Ds%2F7erZdvDnIoX6HYTBqZYVyapI5Els2ywmARadR9XnnHHZ5jCf8q&portalId=4536105&webInteractiveId=370237410323&webInteractiveContentId=180078916265&containerType=EMBEDDED&pageUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us%3FhsCtaAttrib%3D180078916144&pageTitle=Contact+Qnect&referrer=&userAgent=Mozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%3B+rv%3A137.0%29+Gecko%2F20100101+Firefox%2F137.0&hutk=32088049f340575a28fb8c38ed6ef497&hssc=32748897.3.1744984506700&hstc=32748897.32088049f340575a28fb8c38ed6ef497.1740993391383.1744977174960.1744984506700.7&pageId=6175886349&analyticsPageId=6175886349&hsfp=220602648&canonicalUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us&contentType=standard-page" className='headerBtn border border-transparent bg-[#CF5127] hover:bg-transparent hover:border hover:border-white'>Request Demo</Link>
+          <Link href="https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/click?encryptedPayload=AVxigLLyBm5boAh5TN7zvyXe18NU3V7hGyL0ALywbkMv0ahB7OpBkUT8IqTFnmwXGpvnoEPulc4GUtA4NP1BuS91PEWxCmnPfF9NhsghW2%2BXMMWC4tq3va7Ds%2F7erZdvDnIoX6HYTBqZYVyapI5Els2ywmARadR9XnnHHZ5jCf8q&portalId=4536105&webInteractiveId=370237410323&webInteractiveContentId=180078916265&containerType=EMBEDDED&pageUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us%3FhsCtaAttrib%3D180078916144&pageTitle=Contact+Qnect&referrer=&userAgent=Mozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%3B+rv%3A137.0%29+Gecko%2F20100101+Firefox%2F137.0&hutk=32088049f340575a28fb8c38ed6ef497&hssc=32748897.3.1744984506700&hstc=32748897.32088049f340575a28fb8c38ed6ef497.1740993391383.1744977174960.1744984506700.7&pageId=6175886349&analyticsPageId=6175886349&hsfp=220602648&canonicalUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us&contentType=standard-page" className='headerBtn border border-transparent bg-[#CF5127] hover:bg-transparent hover:border hover:border-white'>Request Demo</Link>
           <Link href="https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/click?encryptedPayload=AVxigLLW9Fd2Jf0Ac1NkgeEJC4DQpaKKzeY5UzUoSr5rfNWr8lekxNWZcmqtAMfqpf7dxPf4%2B1WhaW4SHJUtK68RgAjKy7%2F9Ds90beDcTePUo1Ph9%2F3B04t0vcFP%2Fh0N0wh9jNAfrc473yI344NdLkXsO5lmxFU7yc2FfaXfDxmN9MZ8t8FS&portalId=4536105&webInteractiveId=370240486692&webInteractiveContentId=180078916144&containerType=EMBEDDED&pageUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us%3FhsCtaAttrib%3D180078916144&pageTitle=Contact+Qnect&referrer=&userAgent=Mozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%3B+rv%3A137.0%29+Gecko%2F20100101+Firefox%2F137.0&hutk=32088049f340575a28fb8c38ed6ef497&hssc=32748897.3.1744984506700&hstc=32748897.32088049f340575a28fb8c38ed6ef497.1740993391383.1744977174960.1744984506700.7&pageId=6175886349&analyticsPageId=6175886349&hsfp=220602648&canonicalUrl=https%3A%2F%2Fwww.qnect.com%2Fcontact-us&contentType=standard-page" className='headerBtn border border-transparent bg-[#85C451] hover:bg-transparent hover:border hover:border-white'>Contact Us</Link>
         </div>
 
