@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/hooks";
 import { useSearchParams, useRouter } from "next/navigation";
 import { addToCart, setCartOpen } from '@/lib/features/cart/cartSlice'
 import { useEffect } from "react";
