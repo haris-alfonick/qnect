@@ -6,6 +6,7 @@ import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { useAppDispatch } from "@/lib/hooks";
 import { addToCart, setCartOpen } from "@/lib/features/cart/cartSlice";
 import HubspotCTAFreeTrial from "./hubspotCTA/freeTrial";
+import HubspotCTAExpress from "./hubspotCTA/express";
 
 export default function RevitPage() {
   const dispatch = useAppDispatch()
@@ -140,6 +141,7 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><strong>1 year</strong></li>
             <li className="mt-6"><button onClick={() => handleRevitLicense('express')} className="border border-[#52B3CD] text-[#52B3CD] hover:text-white hover:bg-[#52B3CD] py-1 w-full rounded-md">Buy Subscription</button></li>
+            <HubspotCTAExpress />
           </ul>
         </div>
         <div className="hidden lg:grid lg:col-span-2 sm:col-span-4 col-span-5">
