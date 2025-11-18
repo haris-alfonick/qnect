@@ -2,34 +2,41 @@
 
 import { useAppDispatch } from "@/lib/hooks";
 import { useSearchParams, useRouter } from "next/navigation";
-import { addToCart, setCartOpen } from "@/lib/features/cart/cartSlice";
+import { addToCart, setCartOpen } from '@/lib/features/cart/cartSlice'
 import { useEffect } from "react";
 
-export default function HubspotAddPage() {
+export default function HubspotTokenAddPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const productId = searchParams.get("productId");
+    const priceParam = searchParams.get("price");
 
-    if (!productId) {
+    if (!productId || !priceParam) {
       router.push("/");
       return;
     }
 
+    const price = Number(priceParam);
+
     const item = {
-      id: productId === "Free Trial" ? "1" : productId === "express" ? "2" : "3",
-      name: "Revit",
-      plan: productId,
+      id: productId,
+      name: 'Token',
+      plan:
+        productId === "t1"
+          ? "1000 Tokens"
+          : productId === "t2"
+          ? "5000 Tokens"
+          : "15000 Tokens",
       quantity: 1,
-      price: productId === "Free Trial" ? 0 : productId === "express" ? 950 : 1900,
+      price,
     };
 
     dispatch(addToCart(item));
     dispatch(setCartOpen(true));
-    router.push("/");
-
+    router.push("/tokens");
   }, [searchParams, router, dispatch]);
 
   return <p>Adding item to your cart...</p>;

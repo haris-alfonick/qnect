@@ -1,27 +1,30 @@
 'use client'
-import { addToCart, setCartOpen } from '@/lib/features/cart/cartSlice';
-import { useAppDispatch } from '@/lib/hooks';
+//import { addToCart, setCartOpen } from '@/lib/features/cart/cartSlice';
+//import { useAppDispatch } from '@/lib/hooks';
 import Link from 'next/link'
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/token-tabs"
+import HubspotCTATokens1000 from './hubspotCTA/buyTokens1000';
+import HubspotCTATokens5000 from './hubspotCTA/buyTokens5000';
+import HubspotCTATokens15000 from './hubspotCTA/buyTokens15000';
 // import CheckoutButton from './CheckoutButton';
 
 const TokenComponent = () => {
   const [selected, setSelected] = useState(4750);
-  const dispatch = useAppDispatch()
+  //const dispatch = useAppDispatch()
 
-  const handleRevitLicense = (id: string, price: number) => {
-    const item = {
-      id: id,
-      name: 'Token',
-      plan: id == 't1' ? '1000 Tokens' : id == 't2' ? '5000 Tokens' : '15000 Tokens',
-      quantity: 1,
-      price: price
-    };
+  // const handleRevitLicense = (id: string, price: number) => {
+  //   const item = {
+  //     id: id,
+  //     name: 'Token',
+  //     plan: id == 't1' ? '1000 Tokens' : id == 't2' ? '5000 Tokens' : '15000 Tokens',
+  //     quantity: 1,
+  //     price: price
+  //   };
 
-    dispatch(addToCart(item))
-    dispatch(setCartOpen(true))
-  }
+  //   dispatch(addToCart(item))
+  //   dispatch(setCartOpen(true))
+  // }
 
   const packages = [
     { id: 't1', amount: 1000, price: 1000, cost: '$1.00' },
@@ -214,14 +217,23 @@ const TokenComponent = () => {
             <div className='lg:pl-2'>
               <strong className='text-3xl block lg:pt-0 pt-4'>${selected}</strong>
               <div className='flex space-x-3 pt-4 [&_button]:sm:text-base [&_button]:text-[13px] [&_button]:px-5 [&_button]:py-2 [&_button]:rounded-[8px]'>
-                <button
+                {/* <button
                   className='bg-[#333333] text-white'
                   onClick={() => {
                     if (selectedPackage) {
                       handleRevitLicense(selectedPackage.id, selectedPackage.price);
                     }
                   }}
-                >Buy Tokens</button>
+                >Buy Tokens</button> */}
+                {selectedPackage?.id === "t1" && (
+                  <HubspotCTATokens1000 />
+                )}
+                {selectedPackage?.id === "t2" && (
+                  <HubspotCTATokens5000 />
+                )}
+                {selectedPackage?.id === "t3" && (
+                  <HubspotCTATokens15000 />
+                )}
                 <Link
                   href="https://www.qnect.com/quickqnect/pricing"
                   target="_blank"

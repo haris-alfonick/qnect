@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/lib/hooks";
 import { addToCart, setCartOpen } from "@/lib/features/cart/cartSlice";
 import HubspotCTAFreeTrial from "./hubspotCTA/freeTrial";
 import HubspotCTAExpress from "./hubspotCTA/express";
+import HubspotCTAPro from "./hubspotCTA/pro";
 
 export default function RevitPage() {
   const dispatch = useAppDispatch()
@@ -118,9 +119,9 @@ export default function RevitPage() {
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li className="lg:mt-6"><strong>$0</strong></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
-            <li><strong>14 Days</strong></li>
-            <li className='lg:mt-5 lg:!px-2 !px-0'><button onClick={() => handleRevitLicense('Free Trial')} className='border border-[#CF5127] text-[#CF5127] hover:text-white hover:bg-[#CF5127] lg:py-1 py-2 sm:px-0 px-6 w-full rounded-md'>Get Free Trial</button></li>
-            <HubspotCTAFreeTrial />
+            <li><strong>14 Days!</strong></li>
+            {/* <li className='lg:mt-5 lg:!px-2 !px-0'><button onClick={() => handleRevitLicense('Free Trial')} className='border border-[#CF5127] text-[#CF5127] hover:text-white hover:bg-[#CF5127] lg:py-1 py-2 sm:px-0 px-6 w-full rounded-md'>Get Free Trial</button></li> */}
+            <li className='lg:mt-5'><HubspotCTAFreeTrial /></li>
             {/* <FreeTrial /> */}
           </ul>
         </div>
@@ -140,8 +141,8 @@ export default function RevitPage() {
             <li className="lg:mt-6"><strong>$950</strong></li>
             <li><FontAwesomeIcon icon={faCircleXmark} /></li>
             <li><strong>1 year</strong></li>
-            <li className="mt-6"><button onClick={() => handleRevitLicense('express')} className="border border-[#52B3CD] text-[#52B3CD] hover:text-white hover:bg-[#52B3CD] py-1 w-full rounded-md">Buy Subscription</button></li>
-            <HubspotCTAExpress />
+            {/* <li className="mt-6"><button onClick={() => handleRevitLicense('express')} className="border border-[#52B3CD] text-[#52B3CD] hover:text-white hover:bg-[#52B3CD] py-1 w-full rounded-md">Buy Subscription</button></li> */}
+            <li className="mt-6"><HubspotCTAExpress /></li>
           </ul>
         </div>
         <div className="hidden lg:grid lg:col-span-2 sm:col-span-4 col-span-5">
@@ -160,7 +161,8 @@ export default function RevitPage() {
             <li className="lg:mt-6"><strong>$1900</strong></li>
             <li><FontAwesomeIcon icon={faCircleCheck} /></li>
             <li><strong>1 year</strong></li>
-            <li className="mt-6 !leading-3"><button onClick={() => handleRevitLicense('pro')} className="border border-[#85C451] text-[#85C451] hover:text-white hover:bg-[#85C451] py-1 w-full rounded-md">Buy Subscription</button></li>
+            {/* <li className="mt-6 !leading-3"><button onClick={() => handleRevitLicense('pro')} className="border border-[#85C451] text-[#85C451] hover:text-white hover:bg-[#85C451] py-1 w-full rounded-md">Buy Subscription</button></li> */}
+            <li className="mt-6 !leading-3"><HubspotCTAPro /></li>
           </ul>
         </div>
       </div>
