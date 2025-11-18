@@ -24,7 +24,7 @@ export default function HubspotCTAFreeTrial() {
                 color: #fff !important;
               }
             </style>
-            <a href="https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/click?encryptedPayload=AVxigLLHST51..." 
+            <a href="https://cta-service-cms2.hubspot.com/web-interactives/public/v1/track/click?encryptedPayload=AVxigLLHST51%2FNBqO9HoqmaNtWm1PKZNNCjSAfpqs8Ep9%2FQTDjm9S%2FCDa5HBsSswqYCyTNviIBpqv87%2Fj2eu7IJMfO4eKWoZN5EvWn3hLsOSW%2BWVM6VLUu%2Fff17dysNqEnwrNB6u3XnhEh2cR5zA8RZkWuGMT015O5mxnEIBFFbIt4mF%2BLXcfgD9%2BI2baf%2FelEM3hW%2F74T7n9QSsoGWR&amp;portalId=4536105" 
                class="hs-inline-web-interactive-199554454163"
                data-hubspot-cta-id="199554454163">
               Get Free Trial
